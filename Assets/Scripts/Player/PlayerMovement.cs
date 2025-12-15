@@ -26,7 +26,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
-        Vector3 moveVector = transform.TransformDirection(new Vector3(playerMovementInput.x, 0, playerMovementInput.y));
+        // Get camera's forward and right directions (ignoring Y)
+        Vector3 forward = PlayerCamera.transform.forward;
+        forward.y = 0;
+        forward.Normalize();
+        
+        Vector3 right = PlayerCamera.transform.right;
+        right.y = 0;
+        right.Normalize();
+        
+        // Calculate move direction based on camera orientation
+        Vector3 moveVector = (right * playerMovementInput.x + forward * playerMovementInput.y).normalized;
 
         if(Input.GetKey(KeyCode.Space))
         {

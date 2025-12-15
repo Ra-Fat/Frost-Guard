@@ -19,6 +19,7 @@ public class GameLoopManager : MonoBehaviour
 
     private void Start()
     {
+       LoopShouldEnd = false;
        EnemyIdsToSummon = new Queue<int>();
        EnemiesToRemove = new Queue<Enemy>();
        EntitySummoner.Init();
@@ -123,7 +124,12 @@ public class GameLoopManager : MonoBehaviour
     {
         EnemiesToRemove.Enqueue(EnemyToRemove);
     }
-   
+
+    private void OnDestroy()
+    {
+        LoopShouldEnd = true;
+        EntitySummoner.Cleanup();
+    }
 }
 
 public struct MoveEnemiesJob : IJobParallelForTransform

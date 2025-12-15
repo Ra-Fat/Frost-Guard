@@ -43,8 +43,20 @@ public class EntitySummoner : MonoBehaviour
             {
                 //Dequeue Enemy and initialize
                 SummonedEnemy = ReferenceQueue.Dequeue();
-                SummonedEnemy.Init();
-                SummonedEnemy.gameObject.SetActive(true);
+                
+                // Check if the enemy object is still valid (not destroyed)
+                if(SummonedEnemy == null)
+                {
+                    // Object was destroyed, create a new one instead
+                    GameObject NewEnemy = Instantiate(EnemyPrefabs[EnemyID], GameLoopManager.NodePositions[0], Quaternion.identity);
+                    SummonedEnemy = NewEnemy.GetComponent<Enemy>();
+                    SummonedEnemy.Init();
+                }
+                else
+                {
+                    SummonedEnemy.Init();
+                    SummonedEnemy.gameObject.SetActive(true);
+                }
             }
             else
             {
@@ -72,5 +84,25 @@ public class EntitySummoner : MonoBehaviour
         EnemyToRemove.gameObject.SetActive(false);
         EnemiesInGameTransforms.Remove(EnemyToRemove.transform);
         EnemiesInGame.Remove(EnemyToRemove);
+    }
+
+    public static void Cleanup()
+    {
+        if(EnemiesInGame != null)
+        {
+            EnemiesInGame.Clear();
+        }
+        if(EnemiesInGameTransforms != null)
+        {
+            EnemiesInGameTransforms.Clear();
+        }
+        if(EnemyObjectPools != null)
+        {
+            foreach(var pool in EnemyObjectPools.Values)
+            {
+                pool.Clear();
+            }
+        }
+        isInitialized = false;
     }
 }
