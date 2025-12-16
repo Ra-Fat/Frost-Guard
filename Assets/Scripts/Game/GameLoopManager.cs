@@ -26,9 +26,10 @@ public class GameLoopManager : MonoBehaviour
 
     private void Start()
     {
-        EnemyIdsToSummon = new Queue<int>();
-        EnemiesToRemove = new Queue<Enemy>();
-        EntitySummoner.Init();
+       LoopShouldEnd = false;
+       EnemyIdsToSummon = new Queue<int>();
+       EnemiesToRemove = new Queue<Enemy>();
+       EntitySummoner.Init();
 
         NodePositions = new Vector3[NodeParent.childCount];
 
@@ -162,6 +163,12 @@ public class GameLoopManager : MonoBehaviour
     public static void EnqueueEnemyToRemove(Enemy EnemyToRemove)
     {
         EnemiesToRemove.Enqueue(EnemyToRemove);
+    }
+
+    private void OnDestroy()
+    {
+        LoopShouldEnd = true;
+        EntitySummoner.Cleanup();
     }
 }
 
