@@ -3,20 +3,16 @@
   "WorkspaceRootPath": "D:\\Game_Dev\\Frost-Guard\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|d:\\game_dev\\frost-guard\\assets\\scripts\\targetting\\turret.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\targetting\\turret.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|D:\\Game_Dev\\Frost-Guard\\assets\\scripts\\targetting\\bullet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\targetting\\bullet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Game_Dev\\Frost-Guard\\Assets\\Turret.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Turret.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|d:\\game_dev\\frost-guard\\assets\\scripts\\targetting\\turret.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\targetting\\turret.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|D:\\Game_Dev\\Frost-Guard\\assets\\scripts\\targetting\\towershooting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\targetting\\towershooting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Game_Dev\\Frost-Guard\\Assets\\Turret.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Turret.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\TowerTargeting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -29,6 +25,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Game_Dev\\Frost-Guard\\assets\\scripts\\targetting\\towertargeting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:assets\\scripts\\targetting\\towertargeting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Game_Dev\\Frost-Guard\\assets\\scripts\\targetting\\towershooting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:assets\\scripts\\targetting\\towershooting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,29 +38,30 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Bullet.cs",
               "DocumentMoniker": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Targetting\\Bullet.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Targetting\\Bullet.cs",
               "ToolTip": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Targetting\\Bullet.cs",
               "RelativeToolTip": "Assets\\Scripts\\Targetting\\Bullet.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC4AAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAxwAwAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T14:07:59.554Z"
+              "WhenOpened": "2025-12-14T14:07:59.554Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Turret.cs",
               "DocumentMoniker": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Targetting\\Turret.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Targetting\\Turret.cs",
               "ToolTip": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Targetting\\Turret.cs",
               "RelativeToolTip": "Assets\\Scripts\\Targetting\\Turret.cs",
-              "ViewState": "AgIAACYAAAAAAAAAAAAmwE8AAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAqwFMAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-15T15:14:44.889Z",
               "EditorCaption": ""
@@ -78,7 +79,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "TowerShooting.cs",
               "DocumentMoniker": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Targetting\\TowerShooting.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Targetting\\TowerShooting.cs",
@@ -90,7 +91,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "TowerTargeting.cs",
               "DocumentMoniker": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Targetting\\TowerTargeting.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Targetting\\TowerTargeting.cs",
@@ -102,7 +103,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "TowerTargeting.cs",
               "DocumentMoniker": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\TowerTargeting.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\TowerTargeting.cs",
@@ -113,7 +114,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "TowerPlacement.cs",
               "DocumentMoniker": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\TowerPlacement.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\TowerPlacement.cs",
