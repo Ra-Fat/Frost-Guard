@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
         right.Normalize();
         
         // Calculate move direction based on camera orientation
-        Vector3 moveVector = (right * playerMovementInput.x + forward * playerMovementInput.y).normalized;
+        Vector3 moveVector = right * playerMovementInput.x + forward * playerMovementInput.y;
 
         if(Input.GetKey(KeyCode.Space))
         {
@@ -46,10 +46,13 @@ public class PlayerMovement : MonoBehaviour
         {
             Velocity.y = -1f;
         }
+        else
+        {
+            Velocity.y = 0f;
+        }
 
         Controller.Move(moveVector * Speed * Time.deltaTime);
         Controller.Move(Velocity * Speed * Time.deltaTime);
-        Velocity.y = 0f;
     }
 
     private void MovePlayerCamera()
