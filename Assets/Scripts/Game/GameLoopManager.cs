@@ -5,6 +5,8 @@ using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.Jobs;
 
+using TMPro;
+
 public class GameLoopManager : MonoBehaviour
 {
     public static Vector3[] NodePositions;
@@ -13,30 +15,42 @@ public class GameLoopManager : MonoBehaviour
     public static bool LoopShouldEnd;
     public Transform NodeParent;
 
+    [Header("UI Elements")]
+    public TextMeshProUGUI countdownText; // Assign in inspector
+
+    // Enemy type IDs (set these to match your EntitySummoner IDs)
+    [Header("Enemy Types")]
+    public int enemyType1Id = 1;
+    public int enemyType2Id = 2;
+    public int enemyType3Id = 3;
+
     // Wave spawning settings
     [Header("Wave Spawn Settings")]
-    public float timeBetweenWaves = 5f;
+    public float timeBetweenWaves = 10f; // Set to 10s as requested
     public int initialEnemiesPerWave = 10;
     public int enemiesIncrementPerWave = 10;
     public int totalWaves = 5;
     public float spawnOffset = 0.5f; // Distance offset between spawned enemies
     
     private int currentWave = 1;
-    private float waveTimer = 0f;
+    // private float waveTimer = 0f;
+    private bool isFirstWave = true;
 
     private void Start()
     {
-       LoopShouldEnd = false;
-       EnemyIdsToSummon = new Queue<int>();
-       EnemiesToRemove = new Queue<Enemy>();
-       EntitySummoner.Init();
+        LoopShouldEnd = false;
+        EnemyIdsToSummon = new Queue<int>();
+        EnemiesToRemove = new Queue<Enemy>();
+        EntitySummoner.Init();
 
         NodePositions = new Vector3[NodeParent.childCount];
-
-        for(int i = 0; i < NodePositions.Length; i++)
+        for (int i = 0; i < NodePositions.Length; i++)
         {
             NodePositions[i] = NodeParent.GetChild(i).position;
         }
+
+        if (countdownText != null)
+            countdownText.gameObject.SetActive(false);
 
         StartCoroutine(GameLoop());
         StartCoroutine(WaveSpawner());
@@ -44,41 +58,80 @@ public class GameLoopManager : MonoBehaviour
 
     IEnumerator WaveSpawner()
     {
-        while(LoopShouldEnd == false && currentWave <= totalWaves)
+        while (LoopShouldEnd == false && currentWave <= totalWaves)
         {
+            if (isFirstWave)
+            {
+                yield return StartCoroutine(ShowCountdown(3));
+                isFirstWave = false;
+            }
+            else
+            {
+                yield return StartCoroutine(ShowCountdown((int)timeBetweenWaves));
+            }
+
             int enemiesThisWave = initialEnemiesPerWave + (currentWave - 1) * enemiesIncrementPerWave;
             SpawnWave(enemiesThisWave);
             currentWave++;
-            yield return new WaitForSeconds(timeBetweenWaves);
         }
+    }
+
+    IEnumerator ShowCountdown(int seconds)
+    {
+        if (countdownText == null)
+        {
+            yield return new WaitForSeconds(seconds);
+            yield break;
+        }
+
+        countdownText.gameObject.SetActive(true);
+        for (int i = seconds; i > 0; i--)
+        {
+            countdownText.text = i.ToString();
+            yield return new WaitForSeconds(1f);
+        }
+        countdownText.text = "";
+        countdownText.gameObject.SetActive(false);
     }
 
     void SpawnWave(int enemyCount)
     {
-        for(int i = 0; i < enemyCount; i++)
+        int enemyTypeId = enemyType1Id;
+        if (currentWave <= 3)
         {
-            // Queue enemy with a slight delay based on index
-            StartCoroutine(SpawnEnemyWithDelay(i * 0.2f, i));
+            enemyTypeId = enemyType1Id;
+        }
+        else if (currentWave == 4)
+        {
+            enemyTypeId = enemyType2Id;
+        }
+        else if (currentWave == 5)
+        {
+            enemyTypeId = enemyType3Id;
+        }
+        for (int i = 0; i < enemyCount; i++)
+        {
+            StartCoroutine(SpawnEnemyWithDelay(i * 0.2f, i, enemyTypeId));
         }
     }
 
-    IEnumerator SpawnEnemyWithDelay(float delay, int offsetIndex)
+    IEnumerator SpawnEnemyWithDelay(float delay, int offsetIndex, int enemyTypeId)
     {
         yield return new WaitForSeconds(delay);
-        
+
         // Calculate offset position behind the first node
         Vector3 direction = (NodePositions[0] - NodePositions[1]).normalized;
         float offset = offsetIndex * spawnOffset;
         Vector3 spawnPosition = NodePositions[0] + direction * offset;
-        
+
         // Store original first node position
         Vector3 originalFirstNode = NodePositions[0];
-        
+
         // Temporarily change first node to spawn position
         NodePositions[0] = spawnPosition;
-        
-        EnqueueEnemyToSummon(1);
-        
+
+        EnqueueEnemyToSummon(enemyTypeId);
+
         // Restore original position after a frame
         StartCoroutine(RestoreNodePosition(originalFirstNode));
     }
