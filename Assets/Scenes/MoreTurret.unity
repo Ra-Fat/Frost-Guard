@@ -4226,8 +4226,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeParent: {fileID: 949833262}
-  timeBetweenWaves: 5
-  initialEnemiesPerWave: 5
+  timeBetweenWaves: 10
+  initialEnemiesPerWave: 3
   enemiesIncrementPerWave: 4
   totalWaves: 10
   spawnOffset: 0.5

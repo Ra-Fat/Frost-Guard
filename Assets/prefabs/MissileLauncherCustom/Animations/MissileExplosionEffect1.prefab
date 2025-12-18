@@ -171,8 +171,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 15
-      minScalar: 5
+      scalar: 5
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -289,8 +289,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.5
-      minScalar: 0.25
+      scalar: 0.3
+      minScalar: 0.2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -5080,15 +5080,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7574823892794389308, guid: 6d48714adf0f97740940e28b622504a1, type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.5
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 7574823892794389308, guid: 6d48714adf0f97740940e28b622504a1, type: 3}
       propertyPath: InitialModule.startSpeed.scalar
-      value: 25
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7574823892794389308, guid: 6d48714adf0f97740940e28b622504a1, type: 3}
       propertyPath: InitialModule.startSize.minScalar
-      value: 0.25
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 7574823892794389308, guid: 6d48714adf0f97740940e28b622504a1, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
@@ -5096,7 +5096,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7574823892794389308, guid: 6d48714adf0f97740940e28b622504a1, type: 3}
       propertyPath: InitialModule.startSpeed.minScalar
-      value: 15
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7574823892794389308, guid: 6d48714adf0f97740940e28b622504a1, type: 3}
       propertyPath: InitialModule.gravityModifier.scalar
