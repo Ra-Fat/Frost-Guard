@@ -2,31 +2,30 @@ using UnityEngine;
 
 public class BuildManager : MonoBehaviour
 {
+	public static BuildManager instance;
 
-    public static BuildManager instance;
+	void Awake()
+	{
+		if (instance != null)
+		{
+			Debug.LogError("More than one BuildManager in scene!");
+			return;
+		}
+		instance = this;
+	}
 
-    void Awake()
-    {
-        if (instance != null)
-        {
-            Debug.LogError("More than one BuildManager in scene!");
-            return;
-        }
-        instance = this;
-    }
+	private TurretBlueprint turretToBuild;
 
-    public GameObject standardTurretPrefab;
+	public bool CanBuild { get { return turretToBuild != null; } }
+	public bool HasMoney { get { return PlayerStats.Money >= turretToBuild.cost; } }
 
-    void Start()
-    {
-        turretToBuild = standardTurretPrefab;
-    }
+	public void SelectTurretToBuild(TurretBlueprint turret)
+	{
+		turretToBuild = turret;
+	}
 
-    private GameObject turretToBuild;
-
-    public GameObject GetTurretToBuild()
-    {
-        return turretToBuild;
-    }
-
+	public TurretBlueprint GetTurretToBuild()
+	{
+		return turretToBuild;
+	}
 }

@@ -29,19 +29,66 @@ public class TowerPlacement : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                // Finalize placement by clearing current tower reference
-                CurrentPlacingTower = null;
+                // Check if BuildManager exists
+                if (BuildManager.instance == null)
+                {
+                    Debug.LogError("BuildManager instance not found!");
+                    Destroy(CurrentPlacingTower);
+                    CurrentPlacingTower = null;
+                    return;
+                }
+
+                // Check if player has enough money
+                if (BuildManager.instance.CanBuild && BuildManager.instance.HasMoney)
+                {
+                    TurretBlueprint blueprint = BuildManager.instance.GetTurretToBuild();
+                    
+                    // Deduct money
+                    PlayerStats.Money -= blueprint.cost;
+                    
+                    Debug.Log("Tower placed! Remaining money: " + PlayerStats.Money);
+                    
+                    // Get the position before destroying preview
+                    Vector3 placePosition = CurrentPlacingTower.transform.position;
+                    Quaternion placeRotation = CurrentPlacingTower.transform.rotation;
+                    
+                    Debug.Log($"Placing turret at position: {placePosition}");
+                    
+                    // Destroy preview tower
+                    Destroy(CurrentPlacingTower);
+                    
+                    // Spawn the actual functional turret
+                    GameObject placedTurret = Instantiate(blueprint.prefab, placePosition, placeRotation);
+                    Debug.Log($"Turret placed successfully: {placedTurret.name}");
+                    
+                    // Clear reference
+                    CurrentPlacingTower = null;
+                }
+                else
+                {
+                    // Not enough money - show error and destroy the preview tower
+                    Debug.Log("Not enough money to build this tower!");
+                    Destroy(CurrentPlacingTower);
+                    CurrentPlacingTower = null;
+                }
             }
         }
     }
 
-    public void SetTowerToPlace(GameObject tower)
+    public void SetTowerToPlace(TurretBlueprint blueprint)
     {
         if (CurrentPlacingTower != null)
         {
-            Destroy(CurrentPlacingTower); // Optional: destroy existing tower if placing new one
+            Destroy(CurrentPlacingTower);
         }
-        // Instantiate the tower at some initial position near camera or zero
-        CurrentPlacingTower = Instantiate(tower, Vector3.zero, Quaternion.identity);
+        // Get the prefab from the blueprint and instantiate it
+        CurrentPlacingTower = Instantiate(blueprint.prefab, Vector3.zero, Quaternion.identity);
+        
+        // Disable turret behavior on preview
+        Turret turretScript = CurrentPlacingTower.GetComponent<Turret>();
+        if (turretScript != null)
+        {
+            turretScript.enabled = false;
+        }
     }
 }
