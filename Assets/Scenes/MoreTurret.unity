@@ -4228,7 +4228,7 @@ MonoBehaviour:
   NodeParent: {fileID: 949833262}
   timeBetweenWaves: 10
   initialEnemiesPerWave: 3
-  enemiesIncrementPerWave: 4
+  enemiesIncrementPerWave: 2
   totalWaves: 10
   spawnOffset: 0.5
 --- !u!114 &1938810819
@@ -4495,63 +4495,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005446181}
   m_CullTransparentMesh: 1
---- !u!1001 &2015871254
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 259137946530603947, guid: 5d52d019bd833664581f3bebe6624a0f, type: 3}
-      propertyPath: m_Name
-      value: MissileLauncher
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768420085698589300, guid: 5d52d019bd833664581f3bebe6624a0f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 3.3571892
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768420085698589300, guid: 5d52d019bd833664581f3bebe6624a0f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.4699998
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768420085698589300, guid: 5d52d019bd833664581f3bebe6624a0f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 6.648741
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768420085698589300, guid: 5d52d019bd833664581f3bebe6624a0f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768420085698589300, guid: 5d52d019bd833664581f3bebe6624a0f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768420085698589300, guid: 5d52d019bd833664581f3bebe6624a0f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768420085698589300, guid: 5d52d019bd833664581f3bebe6624a0f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768420085698589300, guid: 5d52d019bd833664581f3bebe6624a0f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768420085698589300, guid: 5d52d019bd833664581f3bebe6624a0f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768420085698589300, guid: 5d52d019bd833664581f3bebe6624a0f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 5d52d019bd833664581f3bebe6624a0f, type: 3}
 --- !u!1 &2038353601
 GameObject:
   m_ObjectHideFlags: 0
@@ -4668,4 +4611,3 @@ SceneRoots:
   - {fileID: 558909094}
   - {fileID: 1938810817}
   - {fileID: 1547059690}
-  - {fileID: 2015871254}
