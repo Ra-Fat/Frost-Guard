@@ -499,7 +499,7 @@ GameObject:
   - component: {fileID: 334709473770569450}
   m_Layer: 0
   m_Name: giant Variant
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1398,7 +1398,7 @@ GameObject:
   - component: {fileID: -5520461731758696216}
   m_Layer: 0
   m_Name: EnemyTest
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2251,6 +2251,10 @@ PrefabInstance:
     - target: {fileID: 6529921568765289506, guid: 62459c4d07c50914b805f3e58702eb5d, type: 3}
       propertyPath: m_Name
       value: giant Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 6529921568765289506, guid: 62459c4d07c50914b805f3e58702eb5d, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
