@@ -18,7 +18,6 @@ public class EntitySummoner : MonoBehaviour
             EnemiesInGameTransforms = new List<Transform>();
             EnemyObjectPools = new Dictionary<int, Queue<Enemy>>();
 
-            // Load enemy prefabs from Resources/Enemies folder
             EnemySummonData[] Enemies = Resources.LoadAll<EnemySummonData>("Enemies");
             foreach(EnemySummonData enemy in Enemies)
             {

@@ -12,7 +12,13 @@ public class TowerPlacement : MonoBehaviour
     // Optional: Set which layers can be placed on (e.g., ground)
     [SerializeField] private LayerMask placementLayerMask = ~0; // Default: Everything
 
+    [SerializeField] private Color hoverColor = new Color(0.298f, 0.318f, 0.357f, 0.5f);
+    [SerializeField] private Color occupiedColor = Color.red;
+
     private GameObject CurrentPlacingTower;
+    private GameObject currentHoveredPlate;
+    private Color originalColor;
+    private HashSet<GameObject> occupiedPlates = new HashSet<GameObject>();
 
     void Update()
     {
@@ -25,12 +31,82 @@ public class TowerPlacement : MonoBehaviour
                 Vector3 newPos = hitInfo.point;
                 newPos.y = towerBaseHeight; // Fix the tower's vertical position to avoid weird movement
                 CurrentPlacingTower.transform.position = newPos;
+
+                // Handle hover effect
+                GameObject hitObject = hitInfo.collider.gameObject;
+                if (hitObject.CompareTag("PlacementPlate"))
+                {
+                    if (currentHoveredPlate != hitObject)
+                    {
+                        // Revert previous plate color
+                        if (currentHoveredPlate != null)
+                        {
+                            currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
+                        }
+                        // Set new plate to hover color
+                        currentHoveredPlate = hitObject;
+                        Renderer rend = currentHoveredPlate.GetComponent<Renderer>();
+                        originalColor = rend.material.color;
+                        if (occupiedPlates.Contains(hitObject))
+                        {
+                            rend.material.color = occupiedColor; // Red for occupied
+                        }
+                        else
+                        {
+                            rend.material.color = hoverColor; // Normal hover
+                        }
+                    }
+                }
+                else
+                {
+                    // Not hovering over a plate, revert color
+                    if (currentHoveredPlate != null)
+                    {
+                        currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
+                        currentHoveredPlate = null;
+                    }
+                }
+            }
+            else
+            {
+                // No hit, revert color
+                if (currentHoveredPlate != null)
+                {
+                    currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
+                    currentHoveredPlate = null;
+                }
             }
 
             if (Input.GetMouseButtonDown(0))
             {
-                // Finalize placement by clearing current tower reference
-                CurrentPlacingTower = null;
+                // Check if can place
+                if (currentHoveredPlate != null && !occupiedPlates.Contains(currentHoveredPlate))
+                {
+                    // Finalize placement
+                    Turret turret = CurrentPlacingTower.GetComponent<Turret>();
+                    if (turret != null)
+                    {
+                        turret.PlaceTurret();
+                        occupiedPlates.Add(currentHoveredPlate); // Mark as occupied
+                    }
+                    // Revert hover color after placement
+                    if (currentHoveredPlate != null)
+                    {
+                        currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
+                        currentHoveredPlate = null;
+                    }
+                    CurrentPlacingTower = null;
+                }
+                // If occupied, do nothing (can't place)
+            }
+        }
+        else
+        {
+            // Not placing, ensure no hover
+            if (currentHoveredPlate != null)
+            {
+                currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
+                currentHoveredPlate = null;
             }
         }
     }
@@ -41,7 +117,18 @@ public class TowerPlacement : MonoBehaviour
         {
             Destroy(CurrentPlacingTower); // Optional: destroy existing tower if placing new one
         }
+        // Reset hover
+        if (currentHoveredPlate != null)
+        {
+            currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
+            currentHoveredPlate = null;
+        }
         // Instantiate the tower at some initial position near camera or zero
         CurrentPlacingTower = Instantiate(tower, Vector3.zero, Quaternion.identity);
+        Turret turret = CurrentPlacingTower.GetComponent<Turret>();
+        if (turret != null)
+        {
+            turret.isPlaced = false;
+        }
     }
 }

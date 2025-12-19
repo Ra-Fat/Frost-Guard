@@ -22,9 +22,20 @@ public class Turret : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
 
+    public bool isPlaced = false;
+
     // Use this for initialization
     void Start()
     {
+        if (isPlaced)
+        {
+            InvokeRepeating("UpdateTarget", 0f, 0.5f);
+        }
+    }
+
+    public void PlaceTurret()
+    {
+        isPlaced = true;
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
 
@@ -57,6 +68,8 @@ public class Turret : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isPlaced) return;
+
         if (target == null)
             return;
 
