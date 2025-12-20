@@ -4,8 +4,9 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float MaxHealth;
-    public float Health;
+    [HideInInspector] public float Health;
     public float Speed;
+    public int MoneyReward = 50;
     public int ID;
     public int NodeIndex;
 

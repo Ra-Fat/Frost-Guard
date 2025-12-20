@@ -46,20 +46,20 @@ public class TowerPlacement : MonoBehaviour
                     // Deduct money
                     PlayerStats.Money -= blueprint.cost;
                     
-                    Debug.Log("Tower placed! Remaining money: " + PlayerStats.Money);
+                    // Debug.Log("Tower placed! Remaining money: " + PlayerStats.Money);
                     
                     // Get the position before destroying preview
                     Vector3 placePosition = CurrentPlacingTower.transform.position;
                     Quaternion placeRotation = CurrentPlacingTower.transform.rotation;
                     
-                    Debug.Log($"Placing turret at position: {placePosition}");
+                    // Debug.Log($"Placing turret at position: {placePosition}");
                     
                     // Destroy preview tower
                     Destroy(CurrentPlacingTower);
                     
                     // Spawn the actual functional turret
                     GameObject placedTurret = Instantiate(blueprint.prefab, placePosition, placeRotation);
-                    Debug.Log($"Turret placed successfully: {placedTurret.name}");
+                    // Debug.Log($"Turret placed successfully: {placedTurret.name}");
                     
                     // Clear reference
                     CurrentPlacingTower = null;

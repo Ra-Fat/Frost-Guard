@@ -496,7 +496,6 @@ GameObject:
   m_Component:
   - component: {fileID: 781582126636461509}
   - component: {fileID: 5077593267971085069}
-  - component: {fileID: 334709473770569450}
   m_Layer: 0
   m_Name: giant Variant
   m_TagString: Enemy
@@ -542,23 +541,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &334709473770569450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 6027369331989543933, guid: 62459c4d07c50914b805f3e58702eb5d, type: 3}
-  m_PrefabInstance: {fileID: 3197412163761034893}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2724663401826711974}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17e284e4c756d1b47906c3a3d6b1c40b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxHealth: 1
-  Health: 1
-  Speed: 3
-  ID: 1
-  NodeIndex: 0
 --- !u!1 &2858859229826410881
 GameObject:
   m_ObjectHideFlags: 0
@@ -1431,9 +1413,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e284e4c756d1b47906c3a3d6b1c40b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 2
-  Health: 2
+  MaxHealth: 50
+  Health: 50
   Speed: 2
+  MoneyReward: 100
   ID: 2
   NodeIndex: 0
 --- !u!1 &5685336440362199943
@@ -2256,7 +2239,8 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -85,11 +85,15 @@ public class GameLoopManager : MonoBehaviour
         }
 
         countdownText.gameObject.SetActive(true);
-        for (int i = seconds; i > 0; i--)
+        float timeRemaining = seconds;
+        
+        while (timeRemaining > 0)
         {
-            countdownText.text = i.ToString();
-            yield return new WaitForSeconds(1f);
+            countdownText.text = string.Format("{0:00.00}", timeRemaining);
+            yield return null;
+            timeRemaining -= Time.deltaTime;
         }
+        
         countdownText.text = "";
         countdownText.gameObject.SetActive(false);
     }
@@ -186,6 +190,7 @@ public class GameLoopManager : MonoBehaviour
 
                     if(EntitySummoner.EnemiesInGame[i].NodeIndex == NodePositions.Length)
                     {
+                        PlayerStats.Lives--;
                         EnqueueEnemyToRemove(EntitySummoner.EnemiesInGame[i]);
                     }
                 }
