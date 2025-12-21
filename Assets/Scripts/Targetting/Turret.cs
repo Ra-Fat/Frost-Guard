@@ -22,6 +22,8 @@ public class Turret : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
 
+    public AudioClip shootSound;
+
     public bool isPlaced = false;
 
     // Use this for initialization
@@ -95,6 +97,12 @@ public class Turret : MonoBehaviour
 
         if (bullet != null)
             bullet.Seek(target);
+
+        // Play gun shot sound
+        if (shootSound != null)
+        {
+            AudioSource.PlayClipAtPoint(shootSound, firePoint.position);
+        }
     }
 
     void OnDrawGizmosSelected()

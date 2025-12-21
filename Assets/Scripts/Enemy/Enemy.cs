@@ -9,6 +9,8 @@ public class Enemy : MonoBehaviour
     public int ID;
     public int NodeIndex;
 
+    public AudioClip deathSound;
+
     public void Init()
     {
         Health = MaxHealth;
@@ -22,6 +24,17 @@ public class Enemy : MonoBehaviour
         Health -= damage;
         if (Health <= 0)
         {
+            Debug.Log("Enemy dying");
+            // Play death sound
+            if (deathSound != null)
+            {
+                Debug.Log("Playing death sound");
+                AudioSource.PlayClipAtPoint(deathSound, transform.position);
+            }
+            else
+            {
+                Debug.Log("Death sound is null - please assign a death sound in the inspector");
+            }
             Destroy(gameObject);
         }
     }

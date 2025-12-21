@@ -1278,6 +1278,7 @@ MonoBehaviour:
   Speed: 4
   ID: 3
   NodeIndex: 0
+  deathSound: {fileID: 8300000, guid: 042e1668eee250545b7c4bd53f11b9d4, type: 3}
 --- !u!114 &7275105771062500316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2233,3 +2234,4 @@ MonoBehaviour:
   Speed: 2
   ID: 3
   NodeIndex: 0
+  deathSound: {fileID: 8300000, guid: 042e1668eee250545b7c4bd53f11b9d4, type: 3}

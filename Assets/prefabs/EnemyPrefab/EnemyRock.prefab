@@ -739,6 +739,7 @@ MonoBehaviour:
   Speed: 2
   ID: 1
   NodeIndex: 0
+  deathSound: {fileID: 8300000, guid: 93408aea10042664ea76514fbcfb7ffd, type: 3}
 --- !u!65 &5293910567538727262
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1726,6 +1727,7 @@ MonoBehaviour:
   Speed: 2
   ID: 2
   NodeIndex: 0
+  deathSound: {fileID: 8300000, guid: 93408aea10042664ea76514fbcfb7ffd, type: 3}
 --- !u!1 &5685336440362199943
 GameObject:
   m_ObjectHideFlags: 0

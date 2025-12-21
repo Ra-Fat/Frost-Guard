@@ -202,6 +202,7 @@ MonoBehaviour:
   turnSpeed: 10
   bulletPrefab: {fileID: 844116166224414211, guid: 7e3dceb55e515bb4ea32cb4d603915d9, type: 3}
   firePoint: {fileID: 7225260429123883181}
+  shootSound: {fileID: 8300000, guid: c66c8869e3fbd154a818d76d6054af75, type: 3}
   isPlaced: 0
 --- !u!1 &6952006123051801190
 GameObject:
