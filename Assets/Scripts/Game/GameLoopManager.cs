@@ -207,10 +207,14 @@ public class GameLoopManager : MonoBehaviour
             // Check win condition: all waves spawned, no enemies queued to summon, and no enemies alive
             if (allWavesSpawned && EnemyIdsToSummon.Count == 0 && EntitySummoner.EnemiesInGame.Count == 0)
             {
-                GameManager gameManager = FindObjectOfType<GameManager>();
-                if (gameManager != null)
+                // Only trigger win if the game is not already over (i.e., player has not lost)
+                if (!GameManager.isGameOver && PlayerStats.Lives > 0)
                 {
-                    gameManager.WinLevel();
+                    GameManager gameManager = FindObjectOfType<GameManager>();
+                    if (gameManager != null)
+                    {
+                        gameManager.WinLevel();
+                    }
                 }
                 LoopShouldEnd = true;
                 yield break;
