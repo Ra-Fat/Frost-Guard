@@ -17,11 +17,16 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if(GameManager.isGameOver)
+        {
+            this.enabled = false;
+            return;
+        }
         playerMovementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         playerMouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
         MovePlayer();
-        MovePlayerCamera();
+        // MovePlayerCamera();
     }
 
     private void MovePlayer()
@@ -55,17 +60,17 @@ public class PlayerMovement : MonoBehaviour
         Controller.Move(Velocity * Speed * Time.deltaTime);
     }
 
-    private void MovePlayerCamera()
-    {
-        if(Input.GetMouseButton(1))
-        {
-            xRotation -= playerMouseInput.y * Sensitivity;
-            yRotation += playerMouseInput.x * Sensitivity;
+    // private void MovePlayerCamera()
+    // {
+    //     if(Input.GetMouseButton(1))
+    //     {
+    //         xRotation -= playerMouseInput.y * Sensitivity;
+    //         yRotation += playerMouseInput.x * Sensitivity;
             
-            xRotation = Mathf.Clamp(xRotation, -90f, 90f); // Prevent over-rotation
+    //         xRotation = Mathf.Clamp(xRotation, -90f, 90f); // Prevent over-rotation
             
-            // Apply both horizontal and vertical rotation to camera only
-            PlayerCamera.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-        }
-    }
+    //         // Apply both horizontal and vertical rotation to camera only
+    //         PlayerCamera.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+    //     }
+    // }
 }

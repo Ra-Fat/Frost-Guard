@@ -35,6 +35,7 @@ public class GameLoopManager : MonoBehaviour
     private int currentWave = 1;
     // private float waveTimer = 0f;
     private bool isFirstWave = true;
+    private bool allWavesSpawned = false;
 
     private void Start()
     {
@@ -71,9 +72,12 @@ public class GameLoopManager : MonoBehaviour
             }
 
             int enemiesThisWave = initialEnemiesPerWave + (currentWave - 1) * enemiesIncrementPerWave;
-            SpawnWave(enemiesThisWave);
+            yield return StartCoroutine(SpawnWaveCoroutine(enemiesThisWave));
             currentWave++;
+            PlayerStats.rounds++;
         }
+        
+        allWavesSpawned = true;
     }
 
     IEnumerator ShowCountdown(int seconds)
@@ -98,7 +102,7 @@ public class GameLoopManager : MonoBehaviour
         countdownText.gameObject.SetActive(false);
     }
 
-    void SpawnWave(int enemyCount)
+    IEnumerator SpawnWaveCoroutine(int enemyCount)
     {
         int enemyTypeId = enemyType1Id;
         if (currentWave <= 3)
@@ -113,37 +117,28 @@ public class GameLoopManager : MonoBehaviour
         {
             enemyTypeId = enemyType3Id;
         }
+        
+        // Spawn all enemies with delays
         for (int i = 0; i < enemyCount; i++)
         {
-            StartCoroutine(SpawnEnemyWithDelay(i * 0.2f, i, enemyTypeId));
+            yield return new WaitForSeconds(0.2f);
+            
+            // Calculate offset position behind the first node
+            Vector3 direction = (NodePositions[0] - NodePositions[1]).normalized;
+            float offset = i * spawnOffset;
+            Vector3 spawnPosition = NodePositions[0] + direction * offset;
+
+            // Store original first node position
+            Vector3 originalFirstNode = NodePositions[0];
+
+            // Temporarily change first node to spawn position
+            NodePositions[0] = spawnPosition;
+
+            EnqueueEnemyToSummon(enemyTypeId);
+
+            // Restore original position
+            NodePositions[0] = originalFirstNode;
         }
-    }
-
-    IEnumerator SpawnEnemyWithDelay(float delay, int offsetIndex, int enemyTypeId)
-    {
-        yield return new WaitForSeconds(delay);
-
-        // Calculate offset position behind the first node
-        Vector3 direction = (NodePositions[0] - NodePositions[1]).normalized;
-        float offset = offsetIndex * spawnOffset;
-        Vector3 spawnPosition = NodePositions[0] + direction * offset;
-
-        // Store original first node position
-        Vector3 originalFirstNode = NodePositions[0];
-
-        // Temporarily change first node to spawn position
-        NodePositions[0] = spawnPosition;
-
-        EnqueueEnemyToSummon(enemyTypeId);
-
-        // Restore original position after a frame
-        StartCoroutine(RestoreNodePosition(originalFirstNode));
-    }
-
-    IEnumerator RestoreNodePosition(Vector3 originalPosition)
-    {
-        yield return null;
-        NodePositions[0] = originalPosition;
     }
 
     IEnumerator GameLoop()
@@ -190,7 +185,7 @@ public class GameLoopManager : MonoBehaviour
 
                     if(EntitySummoner.EnemiesInGame[i].NodeIndex == NodePositions.Length)
                     {
-                        PlayerStats.Lives--;
+                        PlayerStats.Lives = Mathf.Max(PlayerStats.Lives - 1, 0);
                         EnqueueEnemyToRemove(EntitySummoner.EnemiesInGame[i]);
                     }
                 }
@@ -207,6 +202,18 @@ public class GameLoopManager : MonoBehaviour
                 {
                     EntitySummoner.RemoveEnemy(EnemiesToRemove.Dequeue());
                 }
+            }
+
+            // Check win condition: all waves spawned, no enemies queued to summon, and no enemies alive
+            if (allWavesSpawned && EnemyIdsToSummon.Count == 0 && EntitySummoner.EnemiesInGame.Count == 0)
+            {
+                GameManager gameManager = FindObjectOfType<GameManager>();
+                if (gameManager != null)
+                {
+                    gameManager.WinLevel();
+                }
+                LoopShouldEnd = true;
+                yield break;
             }
 
             yield return null;

@@ -9,11 +9,13 @@ public class Enemy : MonoBehaviour
     public int MoneyReward = 50;
     public int ID;
     public int NodeIndex;
+    [HideInInspector] public bool isDead = false;
 
     public void Init()
     {
         Health = MaxHealth;
         transform.position = GameLoopManager.NodePositions[0];
         NodeIndex = 0;
+        isDead = false;
     }
 }

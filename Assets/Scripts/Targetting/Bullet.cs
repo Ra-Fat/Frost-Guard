@@ -55,14 +55,15 @@ public class Bullet : MonoBehaviour
             e = enemy.GetComponentInParent<Enemy>();
         }
 
-        if (e != null)
+        if (e != null && !e.isDead)
         {
             e.Health -= damage;
 
             if (e.Health <= 0)
             {
+                e.isDead = true;
                 PlayerStats.Money += e.MoneyReward;
-                Destroy(e.gameObject);
+                GameLoopManager.EnqueueEnemyToRemove(e);
             }
         }
     }

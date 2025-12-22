@@ -10,6 +10,11 @@ public class PauseMenu : MonoBehaviour
             Debug.Log("Pause Menu Opened");
             Toggle();
         }
+        if(GameManager.isGameOver)
+        {
+            this.enabled = false;
+            return;
+        }
     }
 
     public void Toggle ()
