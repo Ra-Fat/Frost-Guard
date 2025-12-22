@@ -2,11 +2,10 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-
     private Transform target;
-
     public float speed = 70f;
     public float damage = 10f;
+    public float explosionRadius = 0f;
     public GameObject impactEffect;
 
     public void Seek(Transform _target)
@@ -14,10 +13,8 @@ public class Bullet : MonoBehaviour
         target = _target;
     }
 
-    // Update is called once per frame
     void Update()
     {
-
         if (target == null)
         {
             Destroy(gameObject);
@@ -34,37 +31,61 @@ public class Bullet : MonoBehaviour
         }
 
         transform.Translate(dir.normalized * distanceThisFrame, Space.World);
-
+        transform.LookAt(target);
     }
 
     void HitTarget()
     {
         GameObject effectIns = (GameObject)Instantiate(impactEffect, transform.position, transform.rotation);
-        Destroy(effectIns, 2f);
+        Destroy(effectIns, 5f);
 
-        Damage(target);
+        if (explosionRadius > 0f)
+        {
+            Explode();
+        }
+        else
+        {
+            Damage(target);
+        }
+
         Destroy(gameObject);
     }
 
-    void Damage(Transform enemy)
+    void Explode()
     {
-        Enemy e = enemy.GetComponent<Enemy>();
-        
-        if (e == null)
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+        foreach (Collider collider in colliders)
         {
-            e = enemy.GetComponentInParent<Enemy>();
-        }
-
-        if (e != null && !e.isDead)
-        {
-            e.Health -= damage;
-
-            if (e.Health <= 0)
+            if (collider.CompareTag("Enemy"))
             {
-                e.isDead = true;
-                PlayerStats.Money += e.MoneyReward;
-                GameLoopManager.EnqueueEnemyToRemove(e);
+                Damage(collider.transform);
             }
         }
+    }
+
+    void Damage(Transform enemyTransform)
+    {
+        Enemy enemy = enemyTransform.GetComponent<Enemy>();
+        if (enemy == null)
+        {
+            enemy = enemyTransform.GetComponentInParent<Enemy>();
+        }
+        if (enemy != null && !enemy.isDead)
+        {
+            Debug.Log("Bullet dealing damage: " + damage + " to enemy");
+            enemy.Health -= damage;
+            if (enemy.Health <= 0)
+            {
+                enemy.isDead = true;
+                PlayerStats.Money += enemy.MoneyReward;
+                GameLoopManager.EnqueueEnemyToRemove(enemy);
+            }
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 }

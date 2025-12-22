@@ -4,7 +4,6 @@ using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.Jobs;
-
 using TMPro;
 
 public class GameLoopManager : MonoBehaviour
@@ -31,9 +30,12 @@ public class GameLoopManager : MonoBehaviour
     public int enemiesIncrementPerWave = 10;
     public int totalWaves = 5;
     public float spawnOffset = 0.5f; // Distance offset between spawned enemies
-    
+
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip backgroundMusic;
+
     private int currentWave = 1;
-    // private float waveTimer = 0f;
     private bool isFirstWave = true;
     private bool allWavesSpawned = false;
 
@@ -64,6 +66,12 @@ public class GameLoopManager : MonoBehaviour
             if (isFirstWave)
             {
                 yield return StartCoroutine(ShowCountdown(3));
+                if (audioSource != null && backgroundMusic != null)
+                {
+                    audioSource.clip = backgroundMusic;
+                    audioSource.loop = true;
+                    audioSource.Play();
+                }
                 isFirstWave = false;
             }
             else
@@ -76,7 +84,6 @@ public class GameLoopManager : MonoBehaviour
             currentWave++;
             PlayerStats.rounds++;
         }
-        
         allWavesSpawned = true;
     }
 
@@ -90,14 +97,12 @@ public class GameLoopManager : MonoBehaviour
 
         countdownText.gameObject.SetActive(true);
         float timeRemaining = seconds;
-        
         while (timeRemaining > 0)
         {
             countdownText.text = string.Format("{0:00.00}", timeRemaining);
             yield return null;
             timeRemaining -= Time.deltaTime;
         }
-        
         countdownText.text = "";
         countdownText.gameObject.SetActive(false);
     }
@@ -117,52 +122,42 @@ public class GameLoopManager : MonoBehaviour
         {
             enemyTypeId = enemyType3Id;
         }
-        
-        // Spawn all enemies with delays
+
         for (int i = 0; i < enemyCount; i++)
         {
             yield return new WaitForSeconds(0.2f);
-            
-            // Calculate offset position behind the first node
+
             Vector3 direction = (NodePositions[0] - NodePositions[1]).normalized;
             float offset = i * spawnOffset;
             Vector3 spawnPosition = NodePositions[0] + direction * offset;
 
-            // Store original first node position
             Vector3 originalFirstNode = NodePositions[0];
-
-            // Temporarily change first node to spawn position
             NodePositions[0] = spawnPosition;
-
             EnqueueEnemyToSummon(enemyTypeId);
-
-            // Restore original position
             NodePositions[0] = originalFirstNode;
         }
     }
 
     IEnumerator GameLoop()
     {
-        while(LoopShouldEnd == false)
+        while (LoopShouldEnd == false)
         {
-            if(EnemyIdsToSummon.Count > 0)
+            if (EnemyIdsToSummon.Count > 0)
             {
-                for(int i = 0; i < EnemyIdsToSummon.Count; i++)
+                for (int i = 0; i < EnemyIdsToSummon.Count; i++)
                 {
                     EntitySummoner.SummonEnemy(EnemyIdsToSummon.Dequeue());
                 }
             }
 
-            // Only process movement if there are enemies
-            if(EntitySummoner.EnemiesInGame.Count > 0)
+            if (EntitySummoner.EnemiesInGame.Count > 0)
             {
-                //Move Enemies
                 NativeArray<Vector3> NodeToUse = new NativeArray<Vector3>(NodePositions, Allocator.TempJob);
                 NativeArray<float> EnemySpeeds = new NativeArray<float>(EntitySummoner.EnemiesInGame.Count, Allocator.TempJob);
                 NativeArray<int> NodeIndices = new NativeArray<int>(EntitySummoner.EnemiesInGame.Count, Allocator.TempJob);
                 TransformAccessArray EnemyAccess = new TransformAccessArray(EntitySummoner.EnemiesInGameTransforms.ToArray(), 2);
 
-                for(int i = 0; i < EntitySummoner.EnemiesInGame.Count; i++)
+                for (int i = 0; i < EntitySummoner.EnemiesInGame.Count; i++)
                 {
                     EnemySpeeds[i] = EntitySummoner.EnemiesInGame[i].Speed;
                     NodeIndices[i] = EntitySummoner.EnemiesInGame[i].NodeIndex;
@@ -179,11 +174,11 @@ public class GameLoopManager : MonoBehaviour
                 JobHandle MoveJobHandle = MoveJob.Schedule(EnemyAccess);
                 MoveJobHandle.Complete();
 
-                for(int i = 0; i < EntitySummoner.EnemiesInGame.Count; i++)
+                for (int i = 0; i < EntitySummoner.EnemiesInGame.Count; i++)
                 {
                     EntitySummoner.EnemiesInGame[i].NodeIndex = NodeIndices[i];
 
-                    if(EntitySummoner.EnemiesInGame[i].NodeIndex == NodePositions.Length)
+                    if (EntitySummoner.EnemiesInGame[i].NodeIndex == NodePositions.Length)
                     {
                         PlayerStats.Lives = Mathf.Max(PlayerStats.Lives - 1, 0);
                         EnqueueEnemyToRemove(EntitySummoner.EnemiesInGame[i]);
@@ -196,9 +191,9 @@ public class GameLoopManager : MonoBehaviour
                 EnemyAccess.Dispose();
             }
 
-            if(EnemiesToRemove.Count > 0)
+            if (EnemiesToRemove.Count > 0)
             {
-                for(int i = 0; i < EnemiesToRemove.Count; i++)
+                for (int i = 0; i < EnemiesToRemove.Count; i++)
                 {
                     EntitySummoner.RemoveEnemy(EnemiesToRemove.Dequeue());
                 }
@@ -207,7 +202,6 @@ public class GameLoopManager : MonoBehaviour
             // Check win condition: all waves spawned, no enemies queued to summon, and no enemies alive
             if (allWavesSpawned && EnemyIdsToSummon.Count == 0 && EntitySummoner.EnemiesInGame.Count == 0)
             {
-                // Only trigger win if the game is not already over (i.e., player has not lost)
                 if (!GameManager.isGameOver && PlayerStats.Lives > 0)
                 {
                     GameManager gameManager = FindObjectOfType<GameManager>();
@@ -250,22 +244,20 @@ public struct MoveEnemiesJob : IJobParallelForTransform
     [NativeDisableParallelForRestriction]
     public NativeArray<int> NodeIndex;
     public float DeltaTime;
-    
+
     public void Execute(int index, TransformAccess transform)
     {
-        if(NodeIndex[index] >= NodePositions.Length)
+        if (NodeIndex[index] >= NodePositions.Length)
         {
             return;
         }
-        
-        //Move enemy towards next node
+
         Vector3 PositionToMoveTo = NodePositions[NodeIndex[index]];
         transform.position = Vector3.MoveTowards(transform.position, PositionToMoveTo, EnemySpeeds[index] * DeltaTime);
 
-        if(transform.position == PositionToMoveTo)
+        if (transform.position == PositionToMoveTo)
         {
-            //Update Node Index
-            if(NodeIndex[index] < NodePositions.Length)
+            if (NodeIndex[index] < NodePositions.Length)
             {
                 NodeIndex[index]++;
             }
