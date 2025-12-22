@@ -16,6 +16,7 @@ public class TowerPlacement : MonoBehaviour
     [SerializeField] private Color occupiedColor = Color.red;
 
     private GameObject CurrentPlacingTower;
+    private TurretBlueprint currentBlueprint;
     private GameObject currentHoveredPlate;
     private Color originalColor;
     private HashSet<GameObject> occupiedPlates = new HashSet<GameObject>();
@@ -79,23 +80,34 @@ public class TowerPlacement : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                // Check if can place
+                // Check if can place and has enough money
                 if (currentHoveredPlate != null && !occupiedPlates.Contains(currentHoveredPlate))
                 {
-                    // Finalize placement
-                    Turret turret = CurrentPlacingTower.GetComponent<Turret>();
-                    if (turret != null)
+                    if (currentBlueprint != null && PlayerStats.Money >= currentBlueprint.cost)
                     {
-                        turret.PlaceTurret();
-                        occupiedPlates.Add(currentHoveredPlate); // Mark as occupied
+                        // Deduct money
+                        PlayerStats.Money -= currentBlueprint.cost;
+                        // Finalize placement
+                        Turret turret = CurrentPlacingTower.GetComponent<Turret>();
+                        if (turret != null)
+                        {
+                            turret.enabled = true; // Enable turret shooting
+                            turret.PlaceTurret();
+                            occupiedPlates.Add(currentHoveredPlate); // Mark as occupied
+                        }
+                        // Revert hover color after placement
+                        if (currentHoveredPlate != null)
+                        {
+                            currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
+                            currentHoveredPlate = null;
+                        }
+                        CurrentPlacingTower = null;
+                        currentBlueprint = null;
                     }
-                    // Revert hover color after placement
-                    if (currentHoveredPlate != null)
+                    else
                     {
-                        currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
-                        currentHoveredPlate = null;
+                        Debug.Log("Not enough money to place this turret!");
                     }
-                    CurrentPlacingTower = null;
                 }
                 // If occupied, do nothing (can't place)
             }
@@ -119,7 +131,7 @@ public class TowerPlacement : MonoBehaviour
         }
         // Get the prefab from the blueprint and instantiate it
         CurrentPlacingTower = Instantiate(blueprint.prefab, Vector3.zero, Quaternion.identity);
-        
+        currentBlueprint = blueprint;
         // Disable turret behavior on preview
         Turret turretScript = CurrentPlacingTower.GetComponent<Turret>();
         if (turretScript != null)
@@ -132,8 +144,7 @@ public class TowerPlacement : MonoBehaviour
             currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
             currentHoveredPlate = null;
         }
-        // Instantiate the tower at some initial position near camera or zero
-        CurrentPlacingTower = Instantiate(tower, Vector3.zero, Quaternion.identity);
+        // Mark as not placed yet
         Turret turret = CurrentPlacingTower.GetComponent<Turret>();
         if (turret != null)
         {
