@@ -31,6 +31,10 @@ public class GameLoopManager : MonoBehaviour
     public int enemiesIncrementPerWave = 10;
     public int totalWaves = 5;
     public float spawnOffset = 0.5f; // Distance offset between spawned enemies
+
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip backgroundMusic;
     
     private int currentWave = 1;
     // private float waveTimer = 0f;
@@ -63,6 +67,12 @@ public class GameLoopManager : MonoBehaviour
             if (isFirstWave)
             {
                 yield return StartCoroutine(ShowCountdown(3));
+                if (audioSource != null && backgroundMusic != null)
+                {
+                    audioSource.clip = backgroundMusic;
+                    audioSource.loop = true;
+                    audioSource.Play();
+                }
                 isFirstWave = false;
             }
             else
