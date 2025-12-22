@@ -5,13 +5,8 @@ using UnityEngine;
 public class TowerPlacement : MonoBehaviour
 {
     [SerializeField] private Camera PlayerCamera;
-
-    // Set this to the Y height where the tower base should be placed (e.g., ground level)
     [SerializeField] private float towerBaseHeight = 0f;
-
-    // Optional: Set which layers can be placed on (e.g., ground)
-    [SerializeField] private LayerMask placementLayerMask = ~0; // Default: Everything
-
+    [SerializeField] private LayerMask placementLayerMask = ~0;
     [SerializeField] private Color hoverColor = new Color(0.298f, 0.318f, 0.357f, 0.5f);
     [SerializeField] private Color occupiedColor = Color.red;
 
@@ -19,6 +14,7 @@ public class TowerPlacement : MonoBehaviour
     private GameObject currentHoveredPlate;
     private Color originalColor;
     private HashSet<GameObject> occupiedPlates = new HashSet<GameObject>();
+    private Dictionary<GameObject, GameObject> plateTurretMap = new Dictionary<GameObject, GameObject>();
 
     void Update()
     {
@@ -29,37 +25,35 @@ public class TowerPlacement : MonoBehaviour
             if (Physics.Raycast(camray, out RaycastHit hitInfo, 100f, placementLayerMask))
             {
                 Vector3 newPos = hitInfo.point;
-                newPos.y = towerBaseHeight; // Fix the tower's vertical position to avoid weird movement
+                newPos.y = towerBaseHeight;
                 CurrentPlacingTower.transform.position = newPos;
 
-                // Handle hover effect
                 GameObject hitObject = hitInfo.collider.gameObject;
                 if (hitObject.CompareTag("PlacementPlate"))
                 {
                     if (currentHoveredPlate != hitObject)
                     {
-                        // Revert previous plate color
                         if (currentHoveredPlate != null)
                         {
                             currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
                         }
-                        // Set new plate to hover color
+
                         currentHoveredPlate = hitObject;
                         Renderer rend = currentHoveredPlate.GetComponent<Renderer>();
                         originalColor = rend.material.color;
+
                         if (occupiedPlates.Contains(hitObject))
                         {
-                            rend.material.color = occupiedColor; // Red for occupied
+                            rend.material.color = occupiedColor;
                         }
                         else
                         {
-                            rend.material.color = hoverColor; // Normal hover
+                            rend.material.color = hoverColor;
                         }
                     }
                 }
                 else
                 {
-                    // Not hovering over a plate, revert color
                     if (currentHoveredPlate != null)
                     {
                         currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
@@ -69,7 +63,6 @@ public class TowerPlacement : MonoBehaviour
             }
             else
             {
-                // No hit, revert color
                 if (currentHoveredPlate != null)
                 {
                     currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
@@ -79,17 +72,16 @@ public class TowerPlacement : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                // Check if can place
                 if (currentHoveredPlate != null && !occupiedPlates.Contains(currentHoveredPlate))
                 {
-                    // Finalize placement
                     Turret turret = CurrentPlacingTower.GetComponent<Turret>();
                     if (turret != null)
                     {
                         turret.PlaceTurret();
-                        occupiedPlates.Add(currentHoveredPlate); // Mark as occupied
+                        occupiedPlates.Add(currentHoveredPlate);
+                        plateTurretMap[currentHoveredPlate] = CurrentPlacingTower;
                     }
-                    // Revert hover color after placement
+
                     if (currentHoveredPlate != null)
                     {
                         currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
@@ -97,12 +89,10 @@ public class TowerPlacement : MonoBehaviour
                     }
                     CurrentPlacingTower = null;
                 }
-                // If occupied, do nothing (can't place)
             }
         }
         else
         {
-            // Not placing, ensure no hover
             if (currentHoveredPlate != null)
             {
                 currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
@@ -115,20 +105,44 @@ public class TowerPlacement : MonoBehaviour
     {
         if (CurrentPlacingTower != null)
         {
-            Destroy(CurrentPlacingTower); // Optional: destroy existing tower if placing new one
+            Destroy(CurrentPlacingTower);
         }
-        // Reset hover
+
         if (currentHoveredPlate != null)
         {
             currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
             currentHoveredPlate = null;
         }
-        // Instantiate the tower at some initial position near camera or zero
+
         CurrentPlacingTower = Instantiate(tower, Vector3.zero, Quaternion.identity);
         Turret turret = CurrentPlacingTower.GetComponent<Turret>();
         if (turret != null)
         {
             turret.isPlaced = false;
         }
+    }
+
+    public void RemoveTurret(GameObject turret)
+    {
+        GameObject plateToRemove = null;
+        foreach (var kvp in plateTurretMap)
+        {
+            if (kvp.Value == turret)
+            {
+                plateToRemove = kvp.Key;
+                break;
+            }
+        }
+
+        if (plateToRemove != null)
+        {
+            occupiedPlates.Remove(plateToRemove);
+            plateTurretMap.Remove(plateToRemove);
+        }
+    }
+
+    public GameObject GetCurrentPlacingTower()
+    {
+        return CurrentPlacingTower;
     }
 }
