@@ -1947,3 +1947,4 @@ MonoBehaviour:
   Speed: 2
   ID: 3
   NodeIndex: 0
+  startSpeed: 0

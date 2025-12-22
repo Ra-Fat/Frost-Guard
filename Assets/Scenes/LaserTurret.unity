@@ -4661,10 +4661,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Laser Beamer
       objectReference: {fileID: 0}
+    - target: {fileID: 3807908693608046255, guid: e51e049708c9f564688fcfe2c13ed1b6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4963862261449102392, guid: e51e049708c9f564688fcfe2c13ed1b6, type: 3}
+      propertyPath: slowAmount
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4963862261449102392, guid: e51e049708c9f564688fcfe2c13ed1b6, type: 3}
       propertyPath: impactLight
       value: 
       objectReference: {fileID: 993523417}
+    - target: {fileID: 4963862261449102392, guid: e51e049708c9f564688fcfe2c13ed1b6, type: 3}
+      propertyPath: damageOverTime
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1687879703394324421}
-  - component: {fileID: -1277643177576602795}
+  - component: {fileID: 6224311583550353550}
   m_Layer: 0
   m_Name: EnemyBone
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 3683163286733459455}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-1277643177576602795
+--- !u!114 &6224311583550353550
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -50,6 +50,7 @@ MonoBehaviour:
   Speed: 2
   ID: 1
   NodeIndex: 0
+  startSpeed: 0
 --- !u!1 &564925679309420160
 GameObject:
   m_ObjectHideFlags: 0
@@ -1236,11 +1237,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e284e4c756d1b47906c3a3d6b1c40b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 1
-  Health: 1
+  MaxHealth: 2
+  Health: 2
   Speed: 2
   ID: 1
   NodeIndex: 0
+  startSpeed: 0
 --- !u!65 &8485036250252977293
 BoxCollider:
   m_ObjectHideFlags: 0
