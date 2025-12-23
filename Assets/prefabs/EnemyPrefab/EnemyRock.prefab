@@ -755,6 +755,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarImage: {fileID: 7221130268348917540}
+  MaxHealth: 50
+  Health: 50
+  Speed: 3
+  ID: 1
+  NodeIndex: 0
+  startSpeed: 0
 --- !u!1 &2858859229826410881
 GameObject:
   m_ObjectHideFlags: 0
@@ -1712,6 +1718,7 @@ MonoBehaviour:
   NodeIndex: 0
   isDead: 0
   deathSound: {fileID: 8300000, guid: 93408aea10042664ea76514fbcfb7ffd, type: 3}
+  startSpeed: 0
 --- !u!1 &5685336440362199943
 GameObject:
   m_ObjectHideFlags: 0
@@ -2523,6 +2530,14 @@ PrefabInstance:
     - target: {fileID: 5896656383949602456, guid: 62459c4d07c50914b805f3e58702eb5d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6027369331989543933, guid: 62459c4d07c50914b805f3e58702eb5d, type: 3}
+      propertyPath: Health
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6027369331989543933, guid: 62459c4d07c50914b805f3e58702eb5d, type: 3}
+      propertyPath: MaxHealth
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 6529921568765289506, guid: 62459c4d07c50914b805f3e58702eb5d, type: 3}
       propertyPath: m_Name

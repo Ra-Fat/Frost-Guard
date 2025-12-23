@@ -2218,3 +2218,4 @@ MonoBehaviour:
   NodeIndex: 0
   isDead: 0
   deathSound: {fileID: 8300000, guid: 042e1668eee250545b7c4bd53f11b9d4, type: 3}
+  startSpeed: 0
