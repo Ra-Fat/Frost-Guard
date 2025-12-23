@@ -46,9 +46,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 20
+  Health: 0
   Speed: 2
+  MoneyReward: 50
   ID: 1
   NodeIndex: 0
+  isDead: 0
   deathSound: {fileID: 8300000, guid: eed34bfd182807f4c8945778cc1b7f37, type: 3}
 --- !u!1 &404242544885171372
 GameObject:
@@ -1355,7 +1358,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3683163286733459455}
   - component: {fileID: 59634135864153354}
-  - component: {fileID: 7397036117225217012}
   - component: {fileID: 8485036250252977293}
   - component: {fileID: 6931309517676151224}
   m_Layer: 0
@@ -1404,24 +1406,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7397036117225217012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6763516928187139427}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17e284e4c756d1b47906c3a3d6b1c40b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxHealth: 40
-  Health: 40
-  Speed: 2
-  ID: 1
-  NodeIndex: 0
-  deathSound: {fileID: 8300000, guid: eed34bfd182807f4c8945778cc1b7f37, type: 3}
 --- !u!65 &8485036250252977293
 BoxCollider:
   m_ObjectHideFlags: 0

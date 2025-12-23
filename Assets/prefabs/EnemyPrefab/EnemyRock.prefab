@@ -673,7 +673,6 @@ GameObject:
   m_Component:
   - component: {fileID: 781582126636461509}
   - component: {fileID: 5077593267971085069}
-  - component: {fileID: 334709473770569450}
   - component: {fileID: 5293910567538727262}
   - component: {fileID: 1557381820509209223}
   m_Layer: 0
@@ -722,24 +721,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &334709473770569450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2724663401826711974}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17e284e4c756d1b47906c3a3d6b1c40b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxHealth: 100
-  Health: 100
-  Speed: 2
-  ID: 1
-  NodeIndex: 0
-  deathSound: {fileID: 8300000, guid: 93408aea10042664ea76514fbcfb7ffd, type: 3}
 --- !u!65 &5293910567538727262
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1708,6 +1689,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 781582126636461509}
+  - {fileID: 3197412163761034894}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-5520461731758696216
@@ -1728,6 +1710,7 @@ MonoBehaviour:
   MoneyReward: 100
   ID: 2
   NodeIndex: 0
+  isDead: 0
   deathSound: {fileID: 8300000, guid: 93408aea10042664ea76514fbcfb7ffd, type: 3}
 --- !u!1 &5685336440362199943
 GameObject:
@@ -2555,3 +2538,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 62459c4d07c50914b805f3e58702eb5d, type: 3}
+--- !u!4 &3197412163761034894 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5896656383949602456, guid: 62459c4d07c50914b805f3e58702eb5d, type: 3}
+  m_PrefabInstance: {fileID: 3197412163761034893}
+  m_PrefabAsset: {fileID: 0}

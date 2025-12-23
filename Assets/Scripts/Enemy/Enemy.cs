@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
             {
                 Debug.Log("Death sound is null - please assign a death sound in the inspector");
             }
-            Destroy(gameObject);
+            GameLoopManager.EnqueueEnemyToRemove(this);
         }
     }
 }

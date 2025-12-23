@@ -72,7 +72,7 @@ public class Bullet : MonoBehaviour
         }
         if (enemy != null && !enemy.isDead)
         {
-            Debug.Log("Bullet dealing damage: " + damage + " to enemy");
+            // Debug.Log("Bullet dealing damage: " + damage + " to enemy");
             enemy.Health -= damage;
             if (enemy.Health <= 0)
             {
