@@ -20,14 +20,31 @@ public class Enemy : MonoBehaviour
         transform.position = GameLoopManager.NodePositions[0];
         NodeIndex = 0;
         isDead = false;
+
+        // Ensure Speed is set to a reasonable value at spawn
+        if (Speed <= 0.01f)
+        {
+            Debug.LogWarning($"{gameObject.name} spawned with Speed = {Speed}. Setting default speed of 2.");
+            Speed = 2f;
+        }
+        startSpeed = Speed;
     }
 
     public void TakeDamage(float damage)
     {
         Health -= damage;
+
+        // Sync health with parent if this is a child taking damage
+        Enemy parentEnemy = transform.parent?.GetComponent<Enemy>();
+        if (parentEnemy != null && parentEnemy != this)
+        {
+            parentEnemy.Health = Health;
+        }
+
         if (Health <= 0 && !isDead)
         {
             isDead = true;
+            Health = 0; // Prevent negative health
             Debug.Log("Enemy dying");
             // Play death sound
             if (deathSound != null)
@@ -39,7 +56,7 @@ public class Enemy : MonoBehaviour
             {
                 Debug.Log("Death sound is null - please assign a death sound in the inspector");
             }
-            GameLoopManager.EnqueueEnemyToRemove(this);
+            Die();
         }
 
         // Store the original speed when enemy spawns
@@ -86,23 +103,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
-    {
-        Health -= damage;
-
-        // Sync health with parent if this is a child taking damage
-        Enemy parentEnemy = transform.parent?.GetComponent<Enemy>();
-        if (parentEnemy != null && parentEnemy != this)
-        {
-            parentEnemy.Health = Health;
-        }
-
-        if (Health <= 0)
-        {
-            Health = 0; // Prevent negative health
-            Die();
-        }
-    }
+    // ...existing code...
 
     public void Slow(float slowPercent)
     {

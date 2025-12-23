@@ -8,5 +8,5 @@ public class EnemySummonData : ScriptableObject
 
     [Header("Enemy Stats")]
     public float Speed = 2f;
-    public float MaxHealth = 100f;
+    public float MaxHealth = 20f;
 }

@@ -1192,7 +1192,6 @@ GameObject:
   - component: {fileID: 8782959239664364339}
   - component: {fileID: 8782959239656750325}
   - component: {fileID: 3446761944016770968}
-  - component: {fileID: 7275105771062500316}
   m_Layer: 0
   m_Name: Orc_Wolfrider
   m_TagString: Enemy
@@ -1260,19 +1259,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7275105771062500316
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8782959239664104399}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db0bae12f81df5740a2327b764a20876, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBarImage: {fileID: 2447567748761446782}
 --- !u!1 &8782959239664107033
 GameObject:
   m_ObjectHideFlags: 0
@@ -2175,6 +2161,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1886235198691147607}
   - component: {fileID: -6845241398827790886}
+  - component: {fileID: 3376760720665187009}
   m_Layer: 0
   m_Name: Wolfrider
   m_TagString: Untagged
@@ -2219,3 +2206,16 @@ MonoBehaviour:
   isDead: 0
   deathSound: {fileID: 8300000, guid: 042e1668eee250545b7c4bd53f11b9d4, type: 3}
   startSpeed: 0
+--- !u!114 &3376760720665187009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9101731165256261506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db0bae12f81df5740a2327b764a20876, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarImage: {fileID: 0}

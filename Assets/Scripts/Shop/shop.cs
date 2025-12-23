@@ -4,7 +4,7 @@ public class shop : MonoBehaviour
 {
     public TurretBlueprint standardTurret;
     public TurretBlueprint missileTurret;
-    // public TurretBlueprint laserTurret;
+    public TurretBlueprint laserTurret;
 
     BuildManager buildManager;
     TowerPlacement towerPlacement;
@@ -43,10 +43,10 @@ public class shop : MonoBehaviour
         towerPlacement.SetTowerToPlace(missileTurret);
     }
 
-    // public void SelectLaserTurret()
-    // {
-    //     Debug.Log("Laser Turret Selected");
-    //     buildManager.SelectTurretToBuild(laserTurret);
-    //     towerPlacement.SetTowerToPlace(laserTurret);
-    // }
+    public void SelectLaserTurret()
+    {
+        Debug.Log("Laser Turret Selected");
+        buildManager.SelectTurretToBuild(laserTurret);
+        towerPlacement.SetTowerToPlace(laserTurret);
+    }
 }

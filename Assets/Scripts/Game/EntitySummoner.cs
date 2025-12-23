@@ -1,15 +1,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Struct for manual prefab assignment
+[System.Serializable]
+public struct EnemyPrefabEntry
+{
+    public int EnemyID;
+    public GameObject EnemyPrefab;
+}
+
 public class EntitySummoner : MonoBehaviour
 {
+    [Header("Assign enemy prefabs and IDs here")]
+    public EnemyPrefabEntry[] enemyPrefabEntries;
     public static List<Enemy> EnemiesInGame;
     public static List<Transform> EnemiesInGameTransforms;
     public static Dictionary<int, GameObject> EnemyPrefabs;
     public static Dictionary<int, Queue<Enemy>> EnemyObjectPools;
     private static bool isInitialized;
 
-    public static Dictionary<int, EnemySummonData> EnemyData; // Store full data
+    // Removed EnemyData and ScriptableObject logic
 
     public static void Init()
     {
@@ -17,17 +27,27 @@ public class EntitySummoner : MonoBehaviour
         {
             EnemiesInGame = new List<Enemy>();
             EnemyPrefabs = new Dictionary<int, GameObject>();
-            EnemyData = new Dictionary<int, EnemySummonData>();
             EnemiesInGameTransforms = new List<Transform>();
             EnemyObjectPools = new Dictionary<int, Queue<Enemy>>();
 
-            EnemySummonData[] Enemies = Resources.LoadAll<EnemySummonData>("Enemies");
-            foreach (EnemySummonData enemy in Enemies)
+            // Populate EnemyPrefabs from Inspector array
+            EntitySummoner instance = FindObjectOfType<EntitySummoner>();
+            if (instance != null && instance.enemyPrefabEntries != null)
             {
-                EnemyPrefabs.Add(enemy.EnemyID, enemy.EnemyPrefab);
-                EnemyData.Add(enemy.EnemyID, enemy); // Store full data
-                EnemyObjectPools.Add(enemy.EnemyID, new Queue<Enemy>());
+                foreach (var entry in instance.enemyPrefabEntries)
+                {
+                    if (!EnemyPrefabs.ContainsKey(entry.EnemyID) && entry.EnemyPrefab != null)
+                    {
+                        EnemyPrefabs.Add(entry.EnemyID, entry.EnemyPrefab);
+                        EnemyObjectPools.Add(entry.EnemyID, new Queue<Enemy>());
+                    }
+                }
             }
+            else
+            {
+                Debug.LogError("No EntitySummoner instance or enemyPrefabEntries not set!");
+            }
+
             isInitialized = true;
         }
         else
@@ -65,14 +85,10 @@ public class EntitySummoner : MonoBehaviour
                         return null;
                     }
 
-                    // Apply stats from ScriptableObject
-                    ApplyEnemyStats(SummonedEnemy, EnemyID);
                     SummonedEnemy.Init();
                 }
                 else
                 {
-                    // Apply stats from ScriptableObject before Init
-                    ApplyEnemyStats(SummonedEnemy, EnemyID);
                     SummonedEnemy.Init();
                     SummonedEnemy.gameObject.SetActive(true);
                 }
@@ -92,8 +108,6 @@ public class EntitySummoner : MonoBehaviour
                     return null;
                 }
 
-                // Apply stats from ScriptableObject
-                ApplyEnemyStats(SummonedEnemy, EnemyID);
                 SummonedEnemy.Init();
             }
         }
@@ -110,16 +124,7 @@ public class EntitySummoner : MonoBehaviour
         return SummonedEnemy;
     }
 
-    static void ApplyEnemyStats(Enemy enemy, int enemyID)
-    {
-        if (EnemyData.ContainsKey(enemyID))
-        {
-            EnemySummonData data = EnemyData[enemyID];
-            enemy.Speed = data.Speed;
-            enemy.MaxHealth = data.MaxHealth;
-            Debug.Log($"Applied stats to {enemy.name}: Speed={enemy.Speed}, MaxHealth={enemy.MaxHealth}");
-        }
-    }
+    // Removed ApplyEnemyStats and all ScriptableObject stat application
 
     public static void RemoveEnemy(Enemy EnemyToRemove)
     {
