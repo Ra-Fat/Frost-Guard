@@ -16,6 +16,8 @@ public class GameLoopManager : MonoBehaviour
 
     [Header("UI Elements")]
     public TextMeshProUGUI countdownText; // Assign in inspector
+    public TextMeshProUGUI waveText; // Assign in inspector for wave display
+    public TextMeshProUGUI spawnCountText; // Assign in inspector for spawn count display
 
     // Enemy type IDs (set these to match your EntitySummoner IDs)
     [Header("Enemy Types")]
@@ -25,15 +27,16 @@ public class GameLoopManager : MonoBehaviour
 
     // Wave spawning settings
     [Header("Wave Spawn Settings")]
-    public float timeBetweenWaves = 10f; // Set to 10s as requested
+    public float timeBetweenWaves = 10f;
     public int initialEnemiesPerWave = 10;
     public int enemiesIncrementPerWave = 10;
     public int totalWaves = 5;
-    public float spawnOffset = 0.5f; // Distance offset between spawned enemies
-
+    public float spawnOffset = 1.0f; 
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip backgroundMusic;
+    [Header("Countdown Sound")]
+    public AudioClip countdownBeep;
 
     private int currentWave = 1;
     private bool isFirstWave = true;
@@ -53,7 +56,24 @@ public class GameLoopManager : MonoBehaviour
         }
 
         if (countdownText != null)
-            countdownText.gameObject.SetActive(false);
+        {
+            countdownText.text = "0:00";
+            countdownText.gameObject.SetActive(true);
+        }
+
+        // Play background music automatically at start
+        if (audioSource != null && backgroundMusic != null)
+        {
+            audioSource.clip = backgroundMusic;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+
+        if (waveText != null)
+        {
+            waveText.text = $"{currentWave}/{totalWaves}";
+            waveText.gameObject.SetActive(true);
+        }
 
         StartCoroutine(GameLoop());
         StartCoroutine(WaveSpawner());
@@ -65,22 +85,25 @@ public class GameLoopManager : MonoBehaviour
         {
             if (isFirstWave)
             {
-                yield return StartCoroutine(ShowCountdown(3));
-                if (audioSource != null && backgroundMusic != null)
-                {
-                    audioSource.clip = backgroundMusic;
-                    audioSource.loop = true;
-                    audioSource.Play();
-                }
+                // No countdown for the first wave, start immediately
                 isFirstWave = false;
             }
             else
             {
-                yield return StartCoroutine(ShowCountdown((int)timeBetweenWaves));
+                yield return StartCoroutine(ShowCountdown((int)timeBetweenWaves, false));
             }
 
             int enemiesThisWave = initialEnemiesPerWave + (currentWave - 1) * enemiesIncrementPerWave;
             yield return StartCoroutine(SpawnWaveCoroutine(enemiesThisWave));
+            if (countdownText != null)
+            {
+                countdownText.text = "0:00";
+                countdownText.gameObject.SetActive(true);
+            }
+            if (waveText != null)
+            {
+                waveText.text = $"{currentWave}/{totalWaves}";
+            }
             currentWave++;
             PlayerStats.rounds++;
         }
@@ -89,6 +112,11 @@ public class GameLoopManager : MonoBehaviour
 
     IEnumerator ShowCountdown(int seconds)
     {
+        yield return StartCoroutine(ShowCountdown(seconds, false));
+    }
+
+    IEnumerator ShowCountdown(int seconds, bool playSound)
+    {
         if (countdownText == null)
         {
             yield return new WaitForSeconds(seconds);
@@ -96,15 +124,18 @@ public class GameLoopManager : MonoBehaviour
         }
 
         countdownText.gameObject.SetActive(true);
-        float timeRemaining = seconds;
-        while (timeRemaining > 0)
+        for (int i = seconds; i > 0; i--)
         {
-            countdownText.text = string.Format("{0:00.00}", timeRemaining);
-            yield return null;
-            timeRemaining -= Time.deltaTime;
+            float timer = 1f;
+            while (timer > 0f)
+            {
+                countdownText.text = string.Format("{0:0.00}", i - (1f - timer));
+                yield return null;
+                timer -= Time.deltaTime;
+            }
         }
-        countdownText.text = "";
-        countdownText.gameObject.SetActive(false);
+        countdownText.text = "0:00";
+        // Keep countdownText visible and showing 0:00 after countdown
     }
 
     IEnumerator SpawnWaveCoroutine(int enemyCount)
@@ -122,10 +153,13 @@ public class GameLoopManager : MonoBehaviour
         {
             enemyTypeId = enemyType3Id;
         }
-
         for (int i = 0; i < enemyCount; i++)
         {
-            yield return new WaitForSeconds(0.2f);
+            if (spawnCountText != null)
+            {
+                spawnCountText.text = $"{i + 1} spawn";
+            }
+            yield return new WaitForSeconds(1f); 
 
             // Corrected direction for proper spacing
             Vector3 direction = (NodePositions[1] - NodePositions[0]).normalized;
@@ -136,6 +170,10 @@ public class GameLoopManager : MonoBehaviour
             NodePositions[0] = spawnPosition;
             EnqueueEnemyToSummon(enemyTypeId);
             NodePositions[0] = originalFirstNode;
+        }
+        if (spawnCountText != null)
+        {
+            spawnCountText.text = "";
         }
     }
 

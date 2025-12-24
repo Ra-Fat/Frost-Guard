@@ -27,13 +27,14 @@ public class TowerPlacement : MonoBehaviour
 
             if (Physics.Raycast(camray, out RaycastHit hitInfo, 100f, placementLayerMask))
             {
-                Vector3 newPos = hitInfo.point;
-                newPos.y = towerBaseHeight;
-                CurrentPlacingTower.transform.position = newPos;
-
                 GameObject hitObject = hitInfo.collider.gameObject;
                 if (hitObject.CompareTag("PlacementPlate"))
                 {
+                    // Snap turret to center of plate
+                    Vector3 plateCenter = hitObject.transform.position;
+                    plateCenter.y = towerBaseHeight;
+                    CurrentPlacingTower.transform.position = plateCenter;
+
                     if (currentHoveredPlate != hitObject)
                     {
                         if (currentHoveredPlate != null)
@@ -47,6 +48,10 @@ public class TowerPlacement : MonoBehaviour
                         {
                             rend.material.color = occupiedColor;
                         }
+                        else if (currentBlueprint != null && PlayerStats.Money < currentBlueprint.cost)
+                        {
+                            rend.material.color = Color.red;
+                        }
                         else
                         {
                             rend.material.color = hoverColor;
@@ -55,6 +60,11 @@ public class TowerPlacement : MonoBehaviour
                 }
                 else
                 {
+                    // Snap turret to mouse hit point if not on plate
+                    Vector3 newPos = hitInfo.point;
+                    newPos.y = towerBaseHeight;
+                    CurrentPlacingTower.transform.position = newPos;
+
                     if (currentHoveredPlate != null)
                     {
                         currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;

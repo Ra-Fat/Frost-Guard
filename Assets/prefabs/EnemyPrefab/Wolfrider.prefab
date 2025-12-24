@@ -2197,9 +2197,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e284e4c756d1b47906c3a3d6b1c40b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 100
+  MaxHealth: 40
   Health: 100
-  Speed: 10
+  Speed: 5
   MoneyReward: 200
   ID: 3
   NodeIndex: 0
