@@ -7,6 +7,7 @@ public class Turret : MonoBehaviour
     private Enemy targetEnemy;
 
     [Header("General")]
+    [Header("Attributes")]
     public float range = 15f;
 
     [Header("Use Bullets (default)")]
@@ -26,13 +27,20 @@ public class Turret : MonoBehaviour
     public string enemyTag = "Enemy";
     public Transform partToRotate;
     public float turnSpeed = 10f;
-    public Transform firePoint;
+    [Header("Economy")]
+    public int cost = 100; // Cost to build
+    public float sellPercentage = 0.75f; // Get 75% back when selling
 
+    [Header("Unity Setup Field")]
+    public string enemyTag = "Enemy";
+    public Transform partToRotate;
+    public float turnSpeed = 10f;
+    public GameObject bulletPrefab;
+    public Transform firePoint;
     public AudioClip shootSound;
 
     public bool isPlaced = false;
 
-    // Use this for initialization
     void Start()
     {
         if (isPlaced)
@@ -45,6 +53,34 @@ public class Turret : MonoBehaviour
     {
         isPlaced = true;
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
+    }
+
+    public void SellTurret()
+    {
+        Debug.Log($"SellTurret called on {gameObject.name}");
+
+        // Calculate refund amount
+        int refundAmount = Mathf.RoundToInt(cost * sellPercentage);
+
+        // Add money back (you'll need to implement your money system)
+        // Example: PlayerStats.Money += refundAmount;
+        Debug.Log($"Turret sold! Refunded: {refundAmount}");
+
+        // Remove from occupied plates
+        TowerPlacement placement = FindObjectOfType<TowerPlacement>();
+        if (placement != null)
+        {
+            Debug.Log("Found TowerPlacement, removing turret from occupied list");
+            placement.RemoveTurret(gameObject);
+        }
+        else
+        {
+            Debug.LogError("TowerPlacement not found!");
+        }
+
+        // Destroy the turret
+        Debug.Log($"Destroying turret: {gameObject.name}");
+        Destroy(gameObject);
     }
 
     void UpdateTarget()
@@ -143,6 +179,7 @@ public class Turret : MonoBehaviour
     {
         if (partToRotate == null || target == null) return;
 
+        // Target lock on
         Vector3 dir = target.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
         Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
@@ -153,6 +190,7 @@ public class Turret : MonoBehaviour
     {
         // Safety check
         if (targetEnemy == null || target == null)
+        if (fireCountdown <= 0f)
         {
             Debug.LogWarning("Laser called but targetEnemy or target is null!");
             return;

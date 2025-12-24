@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2667266778636211982}
   - component: {fileID: 7666741183605258098}
   - component: {fileID: 355610987685716603}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7225260429123883181}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6843719744994529607}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PartToRotate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5302857318207559861}
   - component: {fileID: 4710493580203629685}
-  m_Layer: 0
+  - component: {fileID: -8715248366976341972}
+  m_Layer: 6
   m_Name: StandartTurret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,6 +198,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 15
   fireRate: 1
+  cost: 100
+  sellPercentage: 0.75
   enemyTag: Enemy
   partToRotate: {fileID: 6843719744994529607}
   turnSpeed: 10
@@ -204,6 +207,27 @@ MonoBehaviour:
   firePoint: {fileID: 7225260429123883181}
   shootSound: {fileID: 8300000, guid: c66c8869e3fbd154a818d76d6054af75, type: 3}
   isPlaced: 0
+--- !u!65 &-8715248366976341972
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6309974477544342999}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6952006123051801190
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,7 +239,7 @@ GameObject:
   - component: {fileID: 3446721740481720530}
   - component: {fileID: 7398140208266451723}
   - component: {fileID: 1021078334651820450}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
