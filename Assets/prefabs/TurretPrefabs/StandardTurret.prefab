@@ -208,7 +208,7 @@ MonoBehaviour:
   partToRotate: {fileID: 0}
   turnSpeed: 10
   firePoint: {fileID: 0}
-  shootSound: {fileID: 0}
+  shootSound: {fileID: 8300000, guid: c66c8869e3fbd154a818d76d6054af75, type: 3}
   isPlaced: 0
   blueprint:
     prefab: {fileID: 0}

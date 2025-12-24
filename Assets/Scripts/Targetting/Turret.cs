@@ -29,6 +29,9 @@ public class Turret : MonoBehaviour
     public Transform firePoint;
     public AudioClip shootSound;
 
+    // Dedicated AudioSource for turret shot sound
+    private AudioSource turretAudioSource;
+
     public bool isPlaced = false;
 
     // NEW: Store blueprint reference for selling
@@ -42,6 +45,16 @@ public class Turret : MonoBehaviour
     void Start()
     {   
         gameObject.layer = LayerMask.NameToLayer("Turret");
+
+        // Add or get AudioSource for turret shot sound
+        turretAudioSource = GetComponent<AudioSource>();
+        if (turretAudioSource == null)
+        {
+            turretAudioSource = gameObject.AddComponent<AudioSource>();
+        }
+        turretAudioSource.playOnAwake = false;
+        turretAudioSource.spatialBlend = 0f; // 2D sound for reliability
+
         if (isPlaced)
         {
             InvokeRepeating("UpdateTarget", 0f, 0.5f);
@@ -222,9 +235,14 @@ public class Turret : MonoBehaviour
         if (bullet != null)
             bullet.Seek(target);
 
-        if (shootSound != null)
+        if (shootSound != null && turretAudioSource != null)
         {
-            AudioSource.PlayClipAtPoint(shootSound, firePoint.position);
+            Debug.Log($"Shoot sound played (AudioSource): {shootSound.name} at {firePoint.position}");
+            turretAudioSource.PlayOneShot(shootSound);
+        }
+        else
+        {
+            Debug.LogWarning("Shoot sound or turretAudioSource is missing!");
         }
     }
 

@@ -3,6 +3,31 @@ using UnityEngine.UI;
 
 public class SellButton : MonoBehaviour
 {
+    void Start()
+    {
+        Button btn = GetComponent<Button>();
+        if (btn == null)
+        {
+            btn = GetComponentInChildren<Button>();
+            if (btn != null)
+            {
+                Debug.LogWarning("SellButton: Button component found in children, not on root. Consider moving SellButton script to the same GameObject as the Button.");
+            }
+        }
+        if (btn == null)
+        {
+            Debug.LogError("SellButton: No Button component found on prefab or its children!");
+        }
+        else
+        {
+            int count = btn.onClick.GetPersistentEventCount();
+            Debug.Log($"SellButton: Button found. OnClick event count: {count}");
+            if (count == 0)
+            {
+                Debug.LogWarning("SellButton: No OnClick event assigned! You must wire OnSellButtonClicked in the Inspector.");
+            }
+        }
+    }
     private Turret targetTurret;
     private TurretSelector selector;
 

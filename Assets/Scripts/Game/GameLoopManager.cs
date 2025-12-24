@@ -8,6 +8,17 @@ using TMPro;
 
 public class GameLoopManager : MonoBehaviour
 {
+    [Header("Win UI")]
+    public GameObject continueButton; // Assign in inspector, shown on win popup
+    [Header("Level Settings")]
+    public int currentLevel = 1; // 1, 2, or 3
+    public int maxLevel = 3;
+    public float level2SpeedMultiplier = 1.5f;
+    public float level2HealthMultiplier = 1.5f;
+    public float level3SpeedMultiplier = 2.0f;
+    public float level3HealthMultiplier = 2.0f;
+
+
     public static Vector3[] NodePositions;
     public static Queue<Enemy> EnemiesToRemove;
     public static Queue<int> EnemyIdsToSummon;
@@ -18,6 +29,7 @@ public class GameLoopManager : MonoBehaviour
     public TextMeshProUGUI countdownText; // Assign in inspector
     public TextMeshProUGUI waveText; // Assign in inspector for wave display
     public TextMeshProUGUI spawnCountText; // Assign in inspector for spawn count display
+    public TextMeshProUGUI levelText; // Assign in inspector for level display
 
     // Enemy type IDs (set these to match your EntitySummoner IDs)
     [Header("Enemy Types")]
@@ -69,6 +81,14 @@ public class GameLoopManager : MonoBehaviour
             audioSource.Play();
         }
 
+        // Set level settings
+        SetLevelSettings(currentLevel);
+
+        if (levelText != null)
+        {
+            levelText.text = $"{currentLevel}";
+            levelText.gameObject.SetActive(true);
+        }
         if (waveText != null)
         {
             waveText.text = $"{currentWave}/{totalWaves}";
@@ -77,6 +97,28 @@ public class GameLoopManager : MonoBehaviour
 
         StartCoroutine(GameLoop());
         StartCoroutine(WaveSpawner());
+    }
+
+    private void SetLevelSettings(int level)
+    {
+        if (level == 1)
+        {
+            totalWaves = 5;
+            initialEnemiesPerWave = 3;
+            enemiesIncrementPerWave = 2;
+        }
+        else if (level == 2)
+        {
+            totalWaves = 9;
+            initialEnemiesPerWave = 5;
+            enemiesIncrementPerWave = 2;
+        }
+        else if (level == 3)
+        {
+            totalWaves = 15;
+            initialEnemiesPerWave = 8;
+            enemiesIncrementPerWave = 2;
+        }
     }
 
     IEnumerator WaveSpawner()
@@ -140,40 +182,72 @@ public class GameLoopManager : MonoBehaviour
 
     IEnumerator SpawnWaveCoroutine(int enemyCount)
     {
-        int enemyTypeId = enemyType1Id;
-        if (currentWave <= 3)
+        int[] enemyTypes = new int[] { enemyType1Id, enemyType2Id, enemyType3Id };
+        float speedMultiplier = 1f;
+        float healthMultiplier = 1f;
+        if (currentLevel == 2)
         {
-            enemyTypeId = enemyType1Id;
+            speedMultiplier = level2SpeedMultiplier;
+            healthMultiplier = level2HealthMultiplier;
         }
-        else if (currentWave == 4)
+        else if (currentLevel == 3)
         {
-            enemyTypeId = enemyType2Id;
+            speedMultiplier = level3SpeedMultiplier;
+            healthMultiplier = level3HealthMultiplier;
         }
-        else if (currentWave == 5)
-        {
-            enemyTypeId = enemyType3Id;
-        }
+
+        int enemiesSpawnedBefore = EntitySummoner.EnemiesInGame.Count;
+        System.Random rand = new System.Random();
         for (int i = 0; i < enemyCount; i++)
         {
             if (spawnCountText != null)
             {
                 spawnCountText.text = $"{i + 1} spawn";
             }
-            yield return new WaitForSeconds(1f); 
+            yield return new WaitForSeconds(0.7f);
 
-            // Corrected direction for proper spacing
             Vector3 direction = (NodePositions[1] - NodePositions[0]).normalized;
             float offset = i * spawnOffset;
             Vector3 spawnPosition = NodePositions[0] + direction * offset;
 
             Vector3 originalFirstNode = NodePositions[0];
             NodePositions[0] = spawnPosition;
-            EnqueueEnemyToSummon(enemyTypeId);
+
+            int typeToSpawn;
+            if (currentLevel == 1)
+            {
+                // Level 1: waves 1-3: id 1, wave 4: id 2, wave 5: id 3
+                if (currentWave <= 3)
+                    typeToSpawn = enemyType1Id;
+                else if (currentWave == 4)
+                    typeToSpawn = enemyType2Id;
+                else
+                    typeToSpawn = enemyType3Id;
+            }
+            else
+            {
+                // Spawn randomly for level 2 and 3
+                typeToSpawn = enemyTypes[rand.Next(enemyTypes.Length)];
+            }
+            EnemyIdsToSummon.Enqueue(typeToSpawn);
             NodePositions[0] = originalFirstNode;
         }
         if (spawnCountText != null)
         {
             spawnCountText.text = "";
+        }
+
+        // Wait for all enemies to be summoned
+        yield return null;
+
+        // Only apply stat multipliers to the newly spawned enemies
+        int enemiesSpawnedAfter = EntitySummoner.EnemiesInGame.Count;
+        for (int i = enemiesSpawnedBefore; i < enemiesSpawnedAfter; i++)
+        {
+            var enemy = EntitySummoner.EnemiesInGame[i];
+            enemy.Speed *= speedMultiplier;
+            enemy.MaxHealth *= healthMultiplier;
+            enemy.Health = enemy.MaxHealth;
         }
     }
 
@@ -247,13 +321,52 @@ public class GameLoopManager : MonoBehaviour
                     if (gameManager != null)
                     {
                         gameManager.WinLevel();
+                        if (continueButton != null)
+                        {
+                            continueButton.SetActive(true);
+                        }
                     }
                 }
                 LoopShouldEnd = true;
                 yield break;
             }
-
             yield return null;
+        }
+    }
+
+    // Called by continue button on win popup
+    public void GoToNextLevel()
+    {
+        if (currentLevel < maxLevel)
+        {
+            // Close win popup if present
+            GameManager gameManager = FindObjectOfType<GameManager>();
+            if (gameManager != null && gameManager.completeLevelUI != null)
+            {
+                gameManager.completeLevelUI.SetActive(false);
+            }
+            currentLevel++;
+            SetLevelSettings(currentLevel);
+            currentWave = 1;
+            isFirstWave = true;
+            allWavesSpawned = false;
+            LoopShouldEnd = false;
+            PlayerStats.rounds = 0;
+            PlayerStats.Lives = 20; // Or your default lives
+            if (levelText != null)
+            {
+                levelText.text = $"{currentLevel}";
+            }
+            if (waveText != null)
+            {
+                waveText.text = $"{currentWave}/{totalWaves}";
+            }
+            if (continueButton != null)
+            {
+                continueButton.SetActive(false);
+            }
+            StartCoroutine(GameLoop());
+            StartCoroutine(WaveSpawner());
         }
     }
 
