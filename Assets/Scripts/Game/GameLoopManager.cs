@@ -127,7 +127,8 @@ public class GameLoopManager : MonoBehaviour
         {
             yield return new WaitForSeconds(0.2f);
 
-            Vector3 direction = (NodePositions[0] - NodePositions[1]).normalized;
+            // Corrected direction for proper spacing
+            Vector3 direction = (NodePositions[1] - NodePositions[0]).normalized;
             float offset = i * spawnOffset;
             Vector3 spawnPosition = NodePositions[0] + direction * offset;
 
