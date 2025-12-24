@@ -7,7 +7,6 @@ public class Turret : MonoBehaviour
     private Enemy targetEnemy;
 
     [Header("General")]
-    [Header("Attributes")]
     public float range = 15f;
 
     [Header("Use Bullets (default)")]
@@ -27,22 +26,22 @@ public class Turret : MonoBehaviour
     public string enemyTag = "Enemy";
     public Transform partToRotate;
     public float turnSpeed = 10f;
-    [Header("Economy")]
-    public int cost = 100; // Cost to build
-    public float sellPercentage = 0.75f; // Get 75% back when selling
-
-    [Header("Unity Setup Field")]
-    public string enemyTag = "Enemy";
-    public Transform partToRotate;
-    public float turnSpeed = 10f;
-    public GameObject bulletPrefab;
     public Transform firePoint;
     public AudioClip shootSound;
 
     public bool isPlaced = false;
 
+    // NEW: Store blueprint reference for selling
+    [HideInInspector]
+    public TurretBlueprint blueprint;
+
+    // NEW: Sell refund percentage
+    [Header("Economy")]
+    public float sellPercentage = 0.75f; // Get 75% back when selling
+
     void Start()
-    {
+    {   
+        gameObject.layer = LayerMask.NameToLayer("Turret");
         if (isPlaced)
         {
             InvokeRepeating("UpdateTarget", 0f, 0.5f);
@@ -53,33 +52,34 @@ public class Turret : MonoBehaviour
     {
         isPlaced = true;
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
+
+        // NEW: Re-enable collider after placement
+        Collider col = GetComponent<Collider>();
+        if (col != null)
+        {
+            col.enabled = true;
+        }
     }
 
+    // NEW: Sell turret method
     public void SellTurret()
     {
-        Debug.Log($"SellTurret called on {gameObject.name}");
-
-        // Calculate refund amount
-        int refundAmount = Mathf.RoundToInt(cost * sellPercentage);
-
-        // Add money back (you'll need to implement your money system)
-        // Example: PlayerStats.Money += refundAmount;
-        Debug.Log($"Turret sold! Refunded: {refundAmount}");
+        // Calculate refund amount based on blueprint cost
+        if (blueprint != null)
+        {
+            int refundAmount = Mathf.RoundToInt(blueprint.cost * sellPercentage);
+            PlayerStats.Money += refundAmount;
+            Debug.Log($"Turret sold! Refunded: {refundAmount}");
+        }
 
         // Remove from occupied plates
         TowerPlacement placement = FindObjectOfType<TowerPlacement>();
         if (placement != null)
         {
-            Debug.Log("Found TowerPlacement, removing turret from occupied list");
             placement.RemoveTurret(gameObject);
-        }
-        else
-        {
-            Debug.LogError("TowerPlacement not found!");
         }
 
         // Destroy the turret
-        Debug.Log($"Destroying turret: {gameObject.name}");
         Destroy(gameObject);
     }
 
@@ -102,17 +102,13 @@ public class Turret : MonoBehaviour
         if (nearestEnemy != null && shortestDistance <= range)
         {
             target = nearestEnemy.transform;
-
-            // Try to find Enemy component on the object first
             targetEnemy = nearestEnemy.GetComponent<Enemy>();
 
-            // If not found, try parent
             if (targetEnemy == null)
             {
                 targetEnemy = nearestEnemy.GetComponentInParent<Enemy>();
             }
 
-            // If still null, log detailed error
             if (targetEnemy == null)
             {
                 Debug.LogError($"Target {nearestEnemy.name} (parent: {nearestEnemy.transform.parent?.name}) has Enemy tag but no Enemy component found in object or parent!");
@@ -144,7 +140,6 @@ public class Turret : MonoBehaviour
             return;
         }
 
-        // Double-check targetEnemy is still valid
         if (targetEnemy == null || !targetEnemy.gameObject.activeInHierarchy)
         {
             target = null;
@@ -179,7 +174,6 @@ public class Turret : MonoBehaviour
     {
         if (partToRotate == null || target == null) return;
 
-        // Target lock on
         Vector3 dir = target.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
         Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
@@ -188,9 +182,7 @@ public class Turret : MonoBehaviour
 
     void Laser()
     {
-        // Safety check
         if (targetEnemy == null || target == null)
-        if (fireCountdown <= 0f)
         {
             Debug.LogWarning("Laser called but targetEnemy or target is null!");
             return;
@@ -230,7 +222,6 @@ public class Turret : MonoBehaviour
         if (bullet != null)
             bullet.Seek(target);
 
-        // Play gun shot sound
         if (shootSound != null)
         {
             AudioSource.PlayClipAtPoint(shootSound, firePoint.position);

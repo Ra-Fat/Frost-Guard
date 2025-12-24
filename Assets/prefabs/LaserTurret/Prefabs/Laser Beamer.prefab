@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4364850332965956761}
   - component: {fileID: 188397011517725671}
   - component: {fileID: 5834224475493933084}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4401780511679096819}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,9 +125,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6266132663799548}
-  - component: {fileID: 4963862261449102392}
   - component: {fileID: 4610161310900286769}
-  m_Layer: 0
+  - component: {fileID: 4963862261449102392}
+  - component: {fileID: 9003204650583109722}
+  m_Layer: 6
   m_Name: Laser Beamer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,7 +144,7 @@ Transform:
   m_GameObject: {fileID: 3807908693608046255}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.658, z: 0}
+  m_LocalPosition: {x: 0, y: -0.658, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -151,33 +152,6 @@ Transform:
   - {fileID: 8637925105994154798}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4963862261449102392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3807908693608046255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9448b38c6e854ae4d95dfb2efe547446, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 20
-  bulletPrefab: {fileID: 0}
-  fireRate: 1
-  useLaser: 1
-  damageOverTime: 0
-  slowAmount: 0.5
-  lineRenderer: {fileID: 4610161310900286769}
-  impactEffect: {fileID: 2749447667622474513, guid: 07f2f421ccd0ac74fa287d3d683b4b46, type: 3}
-  impactLight: {fileID: 0}
-  enemyTag: Enemy
-  partToRotate: {fileID: 6867728635558484171}
-  turnSpeed: 10
-  firePoint: {fileID: 4401780511679096819}
-  shootSound: {fileID: 0}
-  isPlaced: 0
 --- !u!120 &4610161310900286769
 LineRenderer:
   serializedVersion: 2
@@ -291,6 +265,58 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &4963862261449102392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3807908693608046255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9448b38c6e854ae4d95dfb2efe547446, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 20
+  bulletPrefab: {fileID: 0}
+  fireRate: 1
+  useLaser: 1
+  damageOverTime: 0
+  slowAmount: 0.5
+  lineRenderer: {fileID: 4610161310900286769}
+  impactEffect: {fileID: 2749447667622474513, guid: 07f2f421ccd0ac74fa287d3d683b4b46, type: 3}
+  impactLight: {fileID: 0}
+  enemyTag: Enemy
+  partToRotate: {fileID: 6867728635558484171}
+  turnSpeed: 10
+  firePoint: {fileID: 4401780511679096819}
+  shootSound: {fileID: 0}
+  isPlaced: 0
+  blueprint:
+    prefab: {fileID: 0}
+    cost: 0
+  sellPercentage: 0.75
+--- !u!65 &9003204650583109722
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3807908693608046255}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.24, y: 1.1547072, z: 1.48}
+  m_Center: {x: 0.04, y: 0.41, z: -0.02}
 --- !u!1 &7320684295507596469
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,7 +326,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6867728635558484171}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PartToRotate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -335,7 +361,7 @@ GameObject:
   - component: {fileID: 8637925105994154798}
   - component: {fileID: 3057343837697807690}
   - component: {fileID: 7870776957212499915}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}

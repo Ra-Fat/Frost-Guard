@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// using Targetting;
 
 public class TowerPlacement : MonoBehaviour
 {
@@ -16,6 +15,8 @@ public class TowerPlacement : MonoBehaviour
     private GameObject currentHoveredPlate;
     private Color originalColor;
     private HashSet<GameObject> occupiedPlates = new HashSet<GameObject>();
+
+    // NEW: Track which turret is on which plate for selling
     private Dictionary<GameObject, GameObject> plateTurretMap = new Dictionary<GameObject, GameObject>();
 
     void Update()
@@ -39,11 +40,9 @@ public class TowerPlacement : MonoBehaviour
                         {
                             currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
                         }
-
                         currentHoveredPlate = hitObject;
                         Renderer rend = currentHoveredPlate.GetComponent<Renderer>();
                         originalColor = rend.material.color;
-
                         if (occupiedPlates.Contains(hitObject))
                         {
                             rend.material.color = occupiedColor;
@@ -74,22 +73,20 @@ public class TowerPlacement : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                // Check if can place and has enough money
                 if (currentHoveredPlate != null && !occupiedPlates.Contains(currentHoveredPlate))
                 {
                     if (currentBlueprint != null && PlayerStats.Money >= currentBlueprint.cost)
                     {
-                        // Deduct money
                         PlayerStats.Money -= currentBlueprint.cost;
-                        // Finalize placement
                         Turret turret = CurrentPlacingTower.GetComponent<Turret>();
                         if (turret != null)
                         {
-                            turret.enabled = true; // Enable turret shooting
+                            turret.enabled = true;
                             turret.PlaceTurret();
-                            occupiedPlates.Add(currentHoveredPlate); // Mark as occupied
+                            turret.blueprint = currentBlueprint; // NEW: Store blueprint reference
+                            occupiedPlates.Add(currentHoveredPlate);
+                            plateTurretMap[currentHoveredPlate] = CurrentPlacingTower; // NEW: Track turret-plate relationship
                         }
-                        // Revert hover color after placement
                         if (currentHoveredPlate != null)
                         {
                             currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
@@ -99,17 +96,6 @@ public class TowerPlacement : MonoBehaviour
                         currentBlueprint = null;
                     }
                     else
-                if (currentHoveredPlate != null && !occupiedPlates.Contains(currentHoveredPlate))
-                {
-                    Turret turret = CurrentPlacingTower.GetComponent<Turret>();
-                    if (turret != null)
-                    {
-                        turret.PlaceTurret();
-                        occupiedPlates.Add(currentHoveredPlate);
-                        plateTurretMap[currentHoveredPlate] = CurrentPlacingTower;
-                    }
-
-                    if (currentHoveredPlate != null)
                     {
                         Debug.Log("Not enough money to place this turret!");
                     }
@@ -132,14 +118,21 @@ public class TowerPlacement : MonoBehaviour
         {
             Destroy(CurrentPlacingTower);
         }
-        // Get the prefab from the blueprint and instantiate it
         CurrentPlacingTower = Instantiate(blueprint.prefab, Vector3.zero, Quaternion.identity);
         currentBlueprint = blueprint;
-        // Disable turret behavior on preview
+
         Turret turretScript = CurrentPlacingTower.GetComponent<Turret>();
         if (turretScript != null)
         {
             turretScript.enabled = false;
+            turretScript.isPlaced = false;
+        }
+
+        // NEW: Disable collider during placement
+        Collider col = CurrentPlacingTower.GetComponent<Collider>();
+        if (col != null)
+        {
+            col.enabled = false;
         }
 
         if (currentHoveredPlate != null)
@@ -147,16 +140,9 @@ public class TowerPlacement : MonoBehaviour
             currentHoveredPlate.GetComponent<Renderer>().material.color = originalColor;
             currentHoveredPlate = null;
         }
-        // Mark as not placed yet
-
-        CurrentPlacingTower = Instantiate(tower, Vector3.zero, Quaternion.identity);
-        Turret turret = CurrentPlacingTower.GetComponent<Turret>();
-        if (turret != null)
-        {
-            turret.isPlaced = false;
-        }
     }
 
+    // NEW: Method to remove turret from occupied plates when selling
     public void RemoveTurret(GameObject turret)
     {
         GameObject plateToRemove = null;
@@ -176,6 +162,7 @@ public class TowerPlacement : MonoBehaviour
         }
     }
 
+    // NEW: Public getter for TurretSelector
     public GameObject GetCurrentPlacingTower()
     {
         return CurrentPlacingTower;

@@ -26,37 +26,82 @@ public class TurretSelector : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            // Don't process if clicking on UI
+            // Check if clicking on an actual UI element (not world space canvas on turrets)
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             {
-                Debug.Log("Clicking on UI, ignoring");
-                return;
+                // Additional check: see if we're clicking on a sell button specifically
+                var pointerData = new UnityEngine.EventSystems.PointerEventData(EventSystem.current);
+                pointerData.position = Input.mousePosition;
+
+                var results = new System.Collections.Generic.List<UnityEngine.EventSystems.RaycastResult>();
+                EventSystem.current.RaycastAll(pointerData, results);
+
+                // If we hit a button, it's the sell button - let it handle the click
+                bool hitButton = false;
+                foreach (var result in results)
+                {
+                    if (result.gameObject.GetComponent<UnityEngine.UI.Button>() != null)
+                    {
+                        Debug.Log("Clicking on sell button, ignoring");
+                        hitButton = true;
+                        break;
+                    }
+                }
+
+                if (hitButton) return;
             }
 
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
             Debug.Log("Click detected, casting ray");
 
-            if (Physics.Raycast(ray, out RaycastHit hit, 100f, turretLayer))
+            // DEBUG: Try without layer mask first
+            RaycastHit[] allHits = Physics.RaycastAll(ray, 100f);
+            Debug.Log($"Raycast found {allHits.Length} total hits (no layer filter)");
+
+            foreach (RaycastHit h in allHits)
+            {
+                Debug.Log($"Hit: {h.collider.name}, Layer: {LayerMask.LayerToName(h.collider.gameObject.layer)}");
+            }
+
+            // Use RaycastAll with layer mask
+            RaycastHit[] hits = Physics.RaycastAll(ray, 100f, turretLayer);
+            Debug.Log($"Raycast found {hits.Length} hits with turret layer filter");
+
+            Turret clickedTurret = null;
+
+            // Find the first valid turret in the hits
+            foreach (RaycastHit hit in hits)
             {
                 Debug.Log($"Hit object: {hit.collider.name}, Layer: {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
 
-                Turret clickedTurret = hit.collider.GetComponent<Turret>();
+                Turret turret = hit.collider.GetComponent<Turret>();
 
-                if (clickedTurret != null && clickedTurret.isPlaced)
+                if (turret != null && turret.isPlaced)
                 {
-                    Debug.Log($"Found turret: {clickedTurret.name}, isPlaced: {clickedTurret.isPlaced}");
-                    SelectTurret(clickedTurret);
+                    Debug.Log($"Found valid turret: {turret.name}, isPlaced: {turret.isPlaced}");
+                    clickedTurret = turret;
+                    break;
                 }
-                else
-                {
-                    Debug.Log($"No valid turret found. Turret component: {clickedTurret != null}, isPlaced: {clickedTurret?.isPlaced}");
-                }
+            }
+
+            if (clickedTurret != null)
+            {
+                SelectTurret(clickedTurret);
             }
             else
             {
-                Debug.Log("Raycast hit nothing, deselecting");
+                Debug.Log("No valid turret found in raycasts, deselecting");
                 DeselectTurret();
             }
+        }
+    }
+
+    void LateUpdate()
+    {
+        if (currentSellButton != null)
+        {
+            currentSellButton.transform.LookAt(playerCamera.transform);
+            currentSellButton.transform.Rotate(0, 180, 0);
         }
     }
 
@@ -92,6 +137,13 @@ public class TurretSelector : MonoBehaviour
 
             // Set up the button's reference to this turret
             SellButton sellBtn = currentSellButton.GetComponent<SellButton>();
+            Canvas canvas = currentSellButton.GetComponentInChildren<Canvas>();
+            if (canvas != null && canvas.renderMode == RenderMode.WorldSpace) { 
+                canvas.worldCamera = playerCamera;
+                canvas.enabled = false; // Force refresh
+                canvas.enabled = true;
+                Debug.Log("Assigned event camera to sell button canvas: " + playerCamera.name);
+            }
             if (sellBtn != null)
             {
                 sellBtn.Initialize(turret, this);
