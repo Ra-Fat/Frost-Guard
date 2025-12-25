@@ -1,0 +1,122 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Game_Dev\\Frost-Guard\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|d:\\game_dev\\frost-guard\\assets\\scripts\\targetting\\turretselector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\targetting\\turretselector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|d:\\game_dev\\frost-guard\\assets\\scripts\\targetting\\sellbutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\targetting\\sellbutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|d:\\game_dev\\frost-guard\\assets\\scripts\\targetting\\turret.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\targetting\\turret.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|d:\\game_dev\\frost-guard\\assets\\scripts\\enemy\\enemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\enemy\\enemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|d:\\game_dev\\frost-guard\\assets\\scripts\\player\\towerplacement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\player\\towerplacement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|d:\\game_dev\\frost-guard\\assets\\scripts\\targetting\\bullet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D8B49D69-452C-8BB8-12D9-885FB7D73C6F}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\targetting\\bullet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SellButton.cs",
+              "DocumentMoniker": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Targetting\\SellButton.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Targetting\\SellButton.cs",
+              "ToolTip": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Targetting\\SellButton.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Targetting\\SellButton.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T06:56:36.694Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Enemy.cs",
+              "DocumentMoniker": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Enemy\\Enemy.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Enemy\\Enemy.cs",
+              "ToolTip": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Enemy\\Enemy.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Enemy\\Enemy.cs",
+              "ViewState": "AgIAAHoAAAAAAAAAAADgv4UAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T06:00:23.933Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TurretSelector.cs",
+              "DocumentMoniker": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Targetting\\TurretSelector.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Targetting\\TurretSelector.cs",
+              "ToolTip": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Targetting\\TurretSelector.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Targetting\\TurretSelector.cs",
+              "ViewState": "AgIAAIEAAAAAAAAAAAAiwIwAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T05:32:57.728Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "TowerPlacement.cs",
+              "DocumentMoniker": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Player\\TowerPlacement.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Player\\TowerPlacement.cs",
+              "ToolTip": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Player\\TowerPlacement.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Player\\TowerPlacement.cs",
+              "ViewState": "AgIAAJ8AAAAAAAAAAADwv6kAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T05:23:23.981Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Turret.cs",
+              "DocumentMoniker": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Targetting\\Turret.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Targetting\\Turret.cs",
+              "ToolTip": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Targetting\\Turret.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Targetting\\Turret.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T05:23:10.712Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Bullet.cs",
+              "DocumentMoniker": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Targetting\\Bullet.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Targetting\\Bullet.cs",
+              "ToolTip": "D:\\Game_Dev\\Frost-Guard\\Assets\\Scripts\\Targetting\\Bullet.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Targetting\\Bullet.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAiwB8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-16T03:25:54.852Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
