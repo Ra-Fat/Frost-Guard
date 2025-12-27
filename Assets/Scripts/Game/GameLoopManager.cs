@@ -56,6 +56,7 @@ public class GameLoopManager : MonoBehaviour
 
     private void Start()
     {
+        currentLevel = PlayerPrefs.GetInt("CurrentLevel", 1);
         LoopShouldEnd = false;
         EnemyIdsToSummon = new Queue<int>();
         EnemiesToRemove = new Queue<Enemy>();
@@ -346,13 +347,14 @@ public class GameLoopManager : MonoBehaviour
                 gameManager.completeLevelUI.SetActive(false);
             }
             currentLevel++;
+            PlayerPrefs.SetInt("CurrentLevel", currentLevel);
             SetLevelSettings(currentLevel);
             currentWave = 1;
             isFirstWave = true;
             allWavesSpawned = false;
             LoopShouldEnd = false;
             PlayerStats.rounds = 0;
-            PlayerStats.Lives = 20; // Or your default lives
+            PlayerStats.Lives = 4; // Or your default lives
             if (levelText != null)
             {
                 levelText.text = $"{currentLevel}";
@@ -407,8 +409,9 @@ public struct MoveEnemiesJob : IJobParallelForTransform
         Vector3 PositionToMoveTo = NodePositions[NodeIndex[index]];
         transform.position = Vector3.MoveTowards(transform.position, PositionToMoveTo, EnemySpeeds[index] * DeltaTime);
 
-        if (transform.position == PositionToMoveTo)
+        if (Vector3.Distance(transform.position, PositionToMoveTo) < 0.1f)
         {
+            transform.position = PositionToMoveTo;
             if (NodeIndex[index] < NodePositions.Length)
             {
                 NodeIndex[index]++;
