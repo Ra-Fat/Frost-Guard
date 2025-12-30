@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public string LevelToLoad = "Sample Scene";
+    public string LevelToLoad = "";
 
     [Header("Menu Music")]
     public AudioSource menuAudioSource;
